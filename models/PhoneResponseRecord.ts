@@ -79,7 +79,7 @@ export function PhoneResponseRecordFromJSONTyped(json: any, ignoreDiscriminator:
         'phoneInternational': !exists(json, 'phone_international') ? undefined : json['phone_international'],
         'phoneCountryCode': !exists(json, 'phone_country_code') ? undefined : json['phone_country_code'],
         'phoneNational': !exists(json, 'phone_national') ? undefined : json['phone_national'],
-        'outcome': !exists(json, 'outcome') ? undefined : ProcessorOutcome &amp; objectFromJSON(json['outcome']),
+        'outcome': !exists(json, 'outcome') ? undefined : ProcessorOutcomeFromJSON(json['outcome']),
     };
 }
 
@@ -97,7 +97,7 @@ export function PhoneResponseRecordToJSON(value?: PhoneResponseRecord | null): a
         'phone_international': value.phoneInternational,
         'phone_country_code': value.phoneCountryCode,
         'phone_national': value.phoneNational,
-        'outcome': ProcessorOutcome &amp; objectToJSON(value.outcome),
+        'outcome': ProcessorOutcomeFromJSON(value.outcome),
     };
 }
 
