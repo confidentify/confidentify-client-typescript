@@ -1,3 +1,7 @@
 .vscode/
 .openapi-generator/
 .openapi-generator-ignore
+wwwroot/*.js
+node_modules
+typings
+dist/
