@@ -1,8 +1,8 @@
 {
   "name": "confidentify-client-typescript",
   "version": "1.0.0",
-  "description": "OpenAPI client for confidentify-client-typescript",
-  "author": "OpenAPI-Generator",
+  "description": "Confidentify client for TypeScript",
+  "author": "Kasper Sørensen",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
   "scripts": {
@@ -10,6 +10,6 @@
     "prepare": "npm run build"
   },
   "devDependencies": {
-    "typescript": "^2.4"
+    "typescript": "^3"
   }
 }
