@@ -18,7 +18,7 @@ Next, start coding against the packages `confidentify-client-typescript`.
 Here's an example which assumes you have your account username/password in variables with corresponding names:
 
 ```typescript
-import { AuthApi, Configuration, AccountsApi } from 'confidentify-client-typescript';
+import { AuthApi, Configuration, ProcessApi } from 'confidentify-client-typescript';
 
 var authApi = new AuthApi();
 authApi.authPost({
@@ -31,12 +31,20 @@ authApi.authPost({
         var configuration = new Configuration({
             accessToken: "Bearer " + token,
         });
-        var accountsApi = new AccountsApi(configuration)
-        accountsApi.accountByIdGet({
-            accountId: "_"
+        const processApi = new ProcessApi(configuration);
+        processApi.phonePost({
+            phoneRequest: {
+                records: [
+                    {
+                        country: "US",
+                        phone: "800 FLOWERS"
+                    }
+                ]
+            }
         }).then(response => {
-            console.log("Account ID: " + response.id);
-            console.log("Account name: " + response.name);
+            if (response.records) {
+                console.log("E164 format for 1-800-FLOWERS: " + response.records[0].phoneE164);
+            }
         });
     });
 ```
