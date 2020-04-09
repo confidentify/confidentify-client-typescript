@@ -11,5 +11,14 @@
   },
   "devDependencies": {
     "typescript": "^3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/confidentify/confidentify-client-typescript.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/confidentify/confidentify-client-typescript/issues"
+  },
+  "homepage": "https://github.com/confidentify/confidentify-client-typescript#readme"
 }
