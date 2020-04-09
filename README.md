@@ -20,15 +20,15 @@ Here's an example which assumes you have your account username/password in varia
 ```typescript
 import { AuthApi, Configuration, ProcessApi } from 'confidentify-client-typescript';
 
-var authApi = new AuthApi();
+const authApi = new AuthApi();
 authApi.authPost({
         authRequest: {
             "username": username,
             "password": password
         }
     }).then(response => {
-        var token = response.accessToken;
-        var configuration = new Configuration({
+        const token = response.accessToken;
+        const configuration = new Configuration({
             accessToken: "Bearer " + token,
         });
         const processApi = new ProcessApi(configuration);
