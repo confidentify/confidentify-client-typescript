@@ -30,6 +30,15 @@ import {
     DatasetListResponse,
     DatasetListResponseFromJSON,
     DatasetListResponseToJSON,
+    IngestDocumentsRequest,
+    IngestDocumentsRequestFromJSON,
+    IngestDocumentsRequestToJSON,
+    IngestFileRequest,
+    IngestFileRequestFromJSON,
+    IngestFileRequestToJSON,
+    IngestFileResponse,
+    IngestFileResponseFromJSON,
+    IngestFileResponseToJSON,
     RecordsUploadRequest,
     RecordsUploadRequestFromJSON,
     RecordsUploadRequestToJSON,
@@ -45,6 +54,16 @@ export interface DatasetByIdGetRequest {
 
 export interface DatasetsPostRequest {
     datasetCreateRequest: DatasetCreateRequest;
+}
+
+export interface IngestDocumentsRequest {
+    id: string;
+    ingestDocumentsRequest: IngestDocumentsRequest;
+}
+
+export interface IngestFileRequest {
+    id: string;
+    ingestFileRequest: IngestFileRequest;
 }
 
 export interface RecordsPostRequest {
@@ -240,6 +259,117 @@ export class DatasetsApi extends runtime.BaseAPI {
      */
     async datasetsPost(requestParameters: DatasetsPostRequest): Promise<DatasetCreateResponse> {
         const response = await this.datasetsPostRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Using this endpoint you can initiate data ingestion based on text documents.  Each document will be processed using the `identify` service and the resolved/identified entities will then be added to the dataset as records. 
+     * Initiate ingestion of data from a list of documents.
+     */
+    async ingestDocumentsRaw(requestParameters: IngestDocumentsRequest): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling ingestDocuments.');
+        }
+
+        if (requestParameters.ingestDocumentsRequest === null || requestParameters.ingestDocumentsRequest === undefined) {
+            throw new runtime.RequiredError('ingestDocumentsRequest','Required parameter requestParameters.ingestDocumentsRequest was null or undefined when calling ingestDocuments.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            if (typeof this.configuration.accessToken === 'function') {
+                headerParameters["Authorization"] = this.configuration.accessToken("oAuth2ClientCredentials", []);
+            } else {
+                headerParameters["Authorization"] = this.configuration.accessToken;
+            }
+        }
+
+        const response = await this.request({
+            path: `/datasets/{id}/ingest_documents`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: IngestDocumentsRequestToJSON(requestParameters.ingestDocumentsRequest),
+        });
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Using this endpoint you can initiate data ingestion based on text documents.  Each document will be processed using the `identify` service and the resolved/identified entities will then be added to the dataset as records. 
+     * Initiate ingestion of data from a list of documents.
+     */
+    async ingestDocuments(requestParameters: IngestDocumentsRequest): Promise<void> {
+        await this.ingestDocumentsRaw(requestParameters);
+    }
+
+    /**
+     * Using this endpoint you can initiate data ingestion based on file upload. This endpoint does not accept the actual file for processing, but will validate the request and provide a presigned URL with which the client can continue.  The uploaded file will be handled according to the `file_type` provided in the request.  In the response of this request, a upload file URL will be provided. The client is expected to `PUT` the file contents towards this URL. Once the file has been uploaded, it will be handled asynchronously. 
+     * Initiate ingestion of data from file upload.
+     */
+    async ingestFileRaw(requestParameters: IngestFileRequest): Promise<runtime.ApiResponse<IngestFileResponse>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling ingestFile.');
+        }
+
+        if (requestParameters.ingestFileRequest === null || requestParameters.ingestFileRequest === undefined) {
+            throw new runtime.RequiredError('ingestFileRequest','Required parameter requestParameters.ingestFileRequest was null or undefined when calling ingestFile.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            if (typeof this.configuration.accessToken === 'function') {
+                headerParameters["Authorization"] = this.configuration.accessToken("oAuth2ClientCredentials", []);
+            } else {
+                headerParameters["Authorization"] = this.configuration.accessToken;
+            }
+        }
+
+        const response = await this.request({
+            path: `/datasets/{id}/ingest_file`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: IngestFileRequestToJSON(requestParameters.ingestFileRequest),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => IngestFileResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Using this endpoint you can initiate data ingestion based on file upload. This endpoint does not accept the actual file for processing, but will validate the request and provide a presigned URL with which the client can continue.  The uploaded file will be handled according to the `file_type` provided in the request.  In the response of this request, a upload file URL will be provided. The client is expected to `PUT` the file contents towards this URL. Once the file has been uploaded, it will be handled asynchronously. 
+     * Initiate ingestion of data from file upload.
+     */
+    async ingestFile(requestParameters: IngestFileRequest): Promise<IngestFileResponse> {
+        const response = await this.ingestFileRaw(requestParameters);
         return await response.value();
     }
 

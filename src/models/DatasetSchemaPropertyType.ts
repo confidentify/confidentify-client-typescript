@@ -13,7 +13,7 @@
  */
 
 /**
- * Property types in a dataset schema:  * `string` - A generic text string.  * `integer` - A generic integer.  * `array` - An array of items. The `items` property must also be provided.     Multiple layers of arrays are not supported.  * `person_name` - The name of a person.     Values for this property type can either be provided as a string containing     the full name, or can be provided as an object of the `PersonName_Base` type.  * `job_title` - A job title. Values for this property must be provided as strings.  * `organization_name` - The name of an organization.     Values for this property must be provided as strings.  * `email` - An email address.  * `phone` - A phone number.  * `country` - A country name or code. The 2-letter country code is preferred.  * `birth_date` - A birth date, or alternatively just a birth year.     Values for this property must be provided as strings, preferably in the     `yyyy-MM-dd` date format (but other common date formats will be attempted too).  * `national_id` - A national (or otherwise official) identification number.     This could be used for instance of passport numbers or driver\'s license numbers.     Values for this property can be provided as a string containing the full     national ID, or as an object containing a `country` and a `id` property. 
+ * Property types in a dataset schema:  * `string` - A generic text string.  * `integer` - A generic integer.  * `array` - An array of items. The `items` property must also be provided.     Multiple layers of arrays are not supported.  * `person_name` - The name of a person.     Values for this property type can either be provided as a string containing     the full name, or can be provided as an object of the `PersonName_Base` type.  * `job_title` - A job title. Values for this property must be provided as strings.  * `organization_name` - The name of an organization.     Values for this property must be provided as strings.  * `email` - An email address.  * `phone` - A phone number.  * `country` - A country name or code. The 2-letter country code is preferred.  * `birth_date` - A birth date, or alternatively just a birth year.     Values for this property must be provided as strings, preferably in the     `yyyy-MM-dd` date format (but other common date formats will be attempted too).  * `national_id` - A national (or otherwise official) identification number.     This could be used for instance of passport numbers or driver\'s license numbers.     Values for this property can be provided as a string containing the full     national ID, or as an object containing a `country` and a `id` property.  * `meta_record_source` - The record\'s originating system, repository or document.  * `meta_external_id` - The record\'s ID in an external system.  * `meta_record_group` - A record group, typically used when grouping records in     deduplication scenarios. 
  * @export
  * @enum {string}
  */
@@ -26,7 +26,10 @@ export enum DatasetSchemaPropertyType {
     Phone = 'phone',
     Country = 'country',
     BirthDate = 'birth_date',
-    NationalId = 'national_id'
+    NationalId = 'national_id',
+    MetaRecordSource = 'meta_record_source',
+    MetaExternalId = 'meta_external_id',
+    MetaRecordGroup = 'meta_record_group'
 }
 
 export function DatasetSchemaPropertyTypeFromJSON(json: any): DatasetSchemaPropertyType {
