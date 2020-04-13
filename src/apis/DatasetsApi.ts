@@ -56,12 +56,12 @@ export interface DatasetsPostRequest {
     datasetCreateRequest: DatasetCreateRequest;
 }
 
-export interface IngestDocumentsRequest {
+export interface IngestDocumentsPostRequest {
     id: string;
     ingestDocumentsRequest: IngestDocumentsRequest;
 }
 
-export interface IngestFileRequest {
+export interface IngestFilePostRequest {
     id: string;
     ingestFileRequest: IngestFileRequest;
 }
@@ -266,13 +266,13 @@ export class DatasetsApi extends runtime.BaseAPI {
      * Using this endpoint you can initiate data ingestion based on text documents.  Each document will be processed using the `identify` service and the resolved/identified entities will then be added to the dataset as records. 
      * Initiate ingestion of data from a list of documents.
      */
-    async ingestDocumentsRaw(requestParameters: IngestDocumentsRequest): Promise<runtime.ApiResponse<void>> {
+    async ingestDocumentsPostRaw(requestParameters: IngestDocumentsPostRequest): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling ingestDocuments.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling ingestDocumentsPost.');
         }
 
         if (requestParameters.ingestDocumentsRequest === null || requestParameters.ingestDocumentsRequest === undefined) {
-            throw new runtime.RequiredError('ingestDocumentsRequest','Required parameter requestParameters.ingestDocumentsRequest was null or undefined when calling ingestDocuments.');
+            throw new runtime.RequiredError('ingestDocumentsRequest','Required parameter requestParameters.ingestDocumentsRequest was null or undefined when calling ingestDocumentsPost.');
         }
 
         const queryParameters: runtime.HTTPQuery = {};
@@ -313,21 +313,21 @@ export class DatasetsApi extends runtime.BaseAPI {
      * Using this endpoint you can initiate data ingestion based on text documents.  Each document will be processed using the `identify` service and the resolved/identified entities will then be added to the dataset as records. 
      * Initiate ingestion of data from a list of documents.
      */
-    async ingestDocuments(requestParameters: IngestDocumentsRequest): Promise<void> {
-        await this.ingestDocumentsRaw(requestParameters);
+    async ingestDocumentsPost(requestParameters: IngestDocumentsPostRequest): Promise<void> {
+        await this.ingestDocumentsPostRaw(requestParameters);
     }
 
     /**
      * Using this endpoint you can initiate data ingestion based on file upload. This endpoint does not accept the actual file for processing, but will validate the request and provide a presigned URL with which the client can continue.  The uploaded file will be handled according to the `file_type` provided in the request.  In the response of this request, a upload file URL will be provided. The client is expected to `PUT` the file contents towards this URL. Once the file has been uploaded, it will be handled asynchronously. 
      * Initiate ingestion of data from file upload.
      */
-    async ingestFileRaw(requestParameters: IngestFileRequest): Promise<runtime.ApiResponse<IngestFileResponse>> {
+    async ingestFilePostRaw(requestParameters: IngestFilePostRequest): Promise<runtime.ApiResponse<IngestFileResponse>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling ingestFile.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling ingestFilePost.');
         }
 
         if (requestParameters.ingestFileRequest === null || requestParameters.ingestFileRequest === undefined) {
-            throw new runtime.RequiredError('ingestFileRequest','Required parameter requestParameters.ingestFileRequest was null or undefined when calling ingestFile.');
+            throw new runtime.RequiredError('ingestFileRequest','Required parameter requestParameters.ingestFileRequest was null or undefined when calling ingestFilePost.');
         }
 
         const queryParameters: runtime.HTTPQuery = {};
@@ -368,8 +368,8 @@ export class DatasetsApi extends runtime.BaseAPI {
      * Using this endpoint you can initiate data ingestion based on file upload. This endpoint does not accept the actual file for processing, but will validate the request and provide a presigned URL with which the client can continue.  The uploaded file will be handled according to the `file_type` provided in the request.  In the response of this request, a upload file URL will be provided. The client is expected to `PUT` the file contents towards this URL. Once the file has been uploaded, it will be handled asynchronously. 
      * Initiate ingestion of data from file upload.
      */
-    async ingestFile(requestParameters: IngestFileRequest): Promise<IngestFileResponse> {
-        const response = await this.ingestFileRaw(requestParameters);
+    async ingestFilePost(requestParameters: IngestFilePostRequest): Promise<IngestFileResponse> {
+        const response = await this.ingestFilePostRaw(requestParameters);
         return await response.value();
     }
 
