@@ -13,13 +13,6 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import {
-    DatasetStats,
-    DatasetStatsFromJSON,
-    DatasetStatsFromJSONTyped,
-    DatasetStatsToJSON,
-} from './';
-
 /**
  * 
  * @export
@@ -38,12 +31,6 @@ export interface DatasetListItemAllOf {
      * @memberof DatasetListItemAllOf
      */
     href?: string;
-    /**
-     * 
-     * @type {DatasetStats}
-     * @memberof DatasetListItemAllOf
-     */
-    stats?: DatasetStats;
 }
 
 export function DatasetListItemAllOfFromJSON(json: any): DatasetListItemAllOf {
@@ -58,7 +45,6 @@ export function DatasetListItemAllOfFromJSONTyped(json: any, ignoreDiscriminator
         
         'id': !exists(json, 'id') ? undefined : json['id'],
         'href': !exists(json, 'href') ? undefined : json['href'],
-        'stats': !exists(json, 'stats') ? undefined : DatasetStatsFromJSON(json['stats']),
     };
 }
 
@@ -73,7 +59,6 @@ export function DatasetListItemAllOfToJSON(value?: DatasetListItemAllOf | null):
         
         'id': value.id,
         'href': value.href,
-        'stats': DatasetStatsToJSON(value.stats),
     };
 }
 

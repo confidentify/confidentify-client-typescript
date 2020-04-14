@@ -1,6 +1,6 @@
 {
   "name": "confidentify-client-typescript",
-  "version": "1.0.1",
+  "version": "1.2.0",
   "description": "Confidentify client for TypeScript",
   "author": "Kasper Sørensen",
   "main": "./dist/index.js",

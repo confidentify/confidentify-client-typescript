@@ -14,10 +14,10 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    DatasetSchema,
-    DatasetSchemaFromJSON,
-    DatasetSchemaFromJSONTyped,
-    DatasetSchemaToJSON,
+    DatasetStats,
+    DatasetStatsFromJSON,
+    DatasetStatsFromJSONTyped,
+    DatasetStatsToJSON,
 } from './';
 
 /**
@@ -28,10 +28,22 @@ import {
 export interface DatasetAllAllOf {
     /**
      * 
-     * @type {DatasetSchema}
+     * @type {DatasetStats}
      * @memberof DatasetAllAllOf
      */
-    schema?: DatasetSchema;
+    stats?: DatasetStats;
+    /**
+     * The time of creation of the dataset
+     * @type {Date}
+     * @memberof DatasetAllAllOf
+     */
+    createdAt?: Date;
+    /**
+     * The username of the user who created the dataset
+     * @type {string}
+     * @memberof DatasetAllAllOf
+     */
+    createdBy?: string;
 }
 
 export function DatasetAllAllOfFromJSON(json: any): DatasetAllAllOf {
@@ -44,7 +56,9 @@ export function DatasetAllAllOfFromJSONTyped(json: any, ignoreDiscriminator: boo
     }
     return {
         
-        'schema': !exists(json, 'schema') ? undefined : DatasetSchemaFromJSON(json['schema']),
+        'stats': !exists(json, 'stats') ? undefined : DatasetStatsFromJSON(json['stats']),
+        'createdAt': !exists(json, 'created_at') ? undefined : (new Date(json['created_at'])),
+        'createdBy': !exists(json, 'created_by') ? undefined : json['created_by'],
     };
 }
 
@@ -57,7 +71,9 @@ export function DatasetAllAllOfToJSON(value?: DatasetAllAllOf | null): any {
     }
     return {
         
-        'schema': DatasetSchemaToJSON(value.schema),
+        'stats': DatasetStatsToJSON(value.stats),
+        'created_at': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
+        'created_by': value.createdBy,
     };
 }
 

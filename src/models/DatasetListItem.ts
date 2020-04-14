@@ -26,10 +26,6 @@ import {
     DatasetSchemaFromJSON,
     DatasetSchemaFromJSONTyped,
     DatasetSchemaToJSON,
-    DatasetStats,
-    DatasetStatsFromJSON,
-    DatasetStatsFromJSONTyped,
-    DatasetStatsToJSON,
 } from './';
 
 /**
@@ -62,12 +58,6 @@ export interface DatasetListItem {
      * @memberof DatasetListItem
      */
     href?: string;
-    /**
-     * 
-     * @type {DatasetStats}
-     * @memberof DatasetListItem
-     */
-    stats?: DatasetStats;
 }
 
 export function DatasetListItemFromJSON(json: any): DatasetListItem {
@@ -84,7 +74,6 @@ export function DatasetListItemFromJSONTyped(json: any, ignoreDiscriminator: boo
         'schema': !exists(json, 'schema') ? undefined : DatasetSchemaFromJSON(json['schema']),
         'id': !exists(json, 'id') ? undefined : json['id'],
         'href': !exists(json, 'href') ? undefined : json['href'],
-        'stats': !exists(json, 'stats') ? undefined : DatasetStatsFromJSON(json['stats']),
     };
 }
 
@@ -101,7 +90,6 @@ export function DatasetListItemToJSON(value?: DatasetListItem | null): any {
         'schema': DatasetSchemaToJSON(value.schema),
         'id': value.id,
         'href': value.href,
-        'stats': DatasetStatsToJSON(value.stats),
     };
 }
 

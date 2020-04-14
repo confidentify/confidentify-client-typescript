@@ -68,6 +68,18 @@ export interface DatasetAll {
      * @memberof DatasetAll
      */
     stats?: DatasetStats;
+    /**
+     * The time of creation of the dataset
+     * @type {Date}
+     * @memberof DatasetAll
+     */
+    createdAt?: Date;
+    /**
+     * The username of the user who created the dataset
+     * @type {string}
+     * @memberof DatasetAll
+     */
+    createdBy?: string;
 }
 
 export function DatasetAllFromJSON(json: any): DatasetAll {
@@ -85,6 +97,8 @@ export function DatasetAllFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'id': !exists(json, 'id') ? undefined : json['id'],
         'href': !exists(json, 'href') ? undefined : json['href'],
         'stats': !exists(json, 'stats') ? undefined : DatasetStatsFromJSON(json['stats']),
+        'createdAt': !exists(json, 'created_at') ? undefined : (new Date(json['created_at'])),
+        'createdBy': !exists(json, 'created_by') ? undefined : json['created_by'],
     };
 }
 
@@ -102,6 +116,8 @@ export function DatasetAllToJSON(value?: DatasetAll | null): any {
         'id': value.id,
         'href': value.href,
         'stats': DatasetStatsToJSON(value.stats),
+        'created_at': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
+        'created_by': value.createdBy,
     };
 }
 
