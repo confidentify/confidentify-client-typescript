@@ -20,17 +20,23 @@ import { exists, mapValues } from '../runtime';
  */
 export interface AuthRequest {
     /**
-     * 
+     * The username of the user, usually an email address.
      * @type {string}
      * @memberof AuthRequest
      */
     username?: string;
     /**
-     * 
+     * Password to use for authentication.
      * @type {string}
      * @memberof AuthRequest
      */
     password?: string;
+    /**
+     * Access token issued by Google to use for authentication.
+     * @type {string}
+     * @memberof AuthRequest
+     */
+    googleAccessToken?: string;
     /**
      * Optional integer specifying the number of seconds that the returned token should be valid for. 
      * @type {number}
@@ -57,6 +63,7 @@ export function AuthRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean
         
         'username': !exists(json, 'username') ? undefined : json['username'],
         'password': !exists(json, 'password') ? undefined : json['password'],
+        'googleAccessToken': !exists(json, 'google_access_token') ? undefined : json['google_access_token'],
         'expireAfterSeconds': !exists(json, 'expire_after_seconds') ? undefined : json['expire_after_seconds'],
         'serviceGrants': !exists(json, 'service_grants') ? undefined : json['service_grants'],
     };
@@ -73,6 +80,7 @@ export function AuthRequestToJSON(value?: AuthRequest | null): any {
         
         'username': value.username,
         'password': value.password,
+        'google_access_token': value.googleAccessToken,
         'expire_after_seconds': value.expireAfterSeconds,
         'service_grants': value.serviceGrants,
     };
