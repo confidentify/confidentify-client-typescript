@@ -16,39 +16,46 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface AuthResponse
+ * @interface ConfidentifyAccountUpdateRequest
  */
-export interface AuthResponse {
+export interface ConfidentifyAccountUpdateRequest {
     /**
-     * An access token to be provided in requests to the API via the `Authorization` HTTP header. The header value should prefixed with `Bearer` and a single space, so: `Bearer `. 
+     * 
      * @type {string}
-     * @memberof AuthResponse
+     * @memberof ConfidentifyAccountUpdateRequest
      */
-    accessToken?: string;
+    name?: string;
     /**
-     * Indicates whether the user has a registered account or not. If authentication was able to validate user credentials but an account has not been registered for this user, the user will be able to call a limited set of endpoints in order to register an account. 
-     * @type {boolean}
-     * @memberof AuthResponse
+     * 
+     * @type {string}
+     * @memberof ConfidentifyAccountUpdateRequest
      */
-    registered?: boolean;
+    imageUrl?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ConfidentifyAccountUpdateRequest
+     */
+    websiteUrl?: string;
 }
 
-export function AuthResponseFromJSON(json: any): AuthResponse {
-    return AuthResponseFromJSONTyped(json, false);
+export function ConfidentifyAccountUpdateRequestFromJSON(json: any): ConfidentifyAccountUpdateRequest {
+    return ConfidentifyAccountUpdateRequestFromJSONTyped(json, false);
 }
 
-export function AuthResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): AuthResponse {
+export function ConfidentifyAccountUpdateRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ConfidentifyAccountUpdateRequest {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'accessToken': !exists(json, 'access_token') ? undefined : json['access_token'],
-        'registered': !exists(json, 'registered') ? undefined : json['registered'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
+        'imageUrl': !exists(json, 'image_url') ? undefined : json['image_url'],
+        'websiteUrl': !exists(json, 'website_url') ? undefined : json['website_url'],
     };
 }
 
-export function AuthResponseToJSON(value?: AuthResponse | null): any {
+export function ConfidentifyAccountUpdateRequestToJSON(value?: ConfidentifyAccountUpdateRequest | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,8 +64,9 @@ export function AuthResponseToJSON(value?: AuthResponse | null): any {
     }
     return {
         
-        'access_token': value.accessToken,
-        'registered': value.registered,
+        'name': value.name,
+        'image_url': value.imageUrl,
+        'website_url': value.websiteUrl,
     };
 }
 

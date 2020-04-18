@@ -15,21 +15,38 @@
 
 import * as runtime from '../runtime';
 import {
-    ConfidentifyAccount,
-    ConfidentifyAccountFromJSON,
-    ConfidentifyAccountToJSON,
-    ConfidentifyUser,
-    ConfidentifyUserFromJSON,
-    ConfidentifyUserToJSON,
+    ConfidentifyAccountResponse,
+    ConfidentifyAccountResponseFromJSON,
+    ConfidentifyAccountResponseToJSON,
+    ConfidentifyAccountUpdateRequest,
+    ConfidentifyAccountUpdateRequestFromJSON,
+    ConfidentifyAccountUpdateRequestToJSON,
+    ConfidentifyUserResponse,
+    ConfidentifyUserResponseFromJSON,
+    ConfidentifyUserResponseToJSON,
+    ConfidentifyUserUpdateRequest,
+    ConfidentifyUserUpdateRequestFromJSON,
+    ConfidentifyUserUpdateRequestToJSON,
 } from '../models';
 
 export interface AccountByIdGetRequest {
     accountId: string;
 }
 
+export interface AccountByIdUpdateRequest {
+    accountId: string;
+    confidentifyAccountUpdateRequest?: ConfidentifyAccountUpdateRequest;
+}
+
 export interface UserByIdGetRequest {
     accountId: string;
     username: string;
+}
+
+export interface UserByIdUpdateRequest {
+    accountId: string;
+    username: string;
+    confidentifyUserUpdateRequest?: ConfidentifyUserUpdateRequest;
 }
 
 /**
@@ -40,7 +57,7 @@ export class AccountsApi extends runtime.BaseAPI {
     /**
      * Get account information
      */
-    async accountByIdGetRaw(requestParameters: AccountByIdGetRequest): Promise<runtime.ApiResponse<ConfidentifyAccount>> {
+    async accountByIdGetRaw(requestParameters: AccountByIdGetRequest): Promise<runtime.ApiResponse<ConfidentifyAccountResponse>> {
         if (requestParameters.accountId === null || requestParameters.accountId === undefined) {
             throw new runtime.RequiredError('accountId','Required parameter requestParameters.accountId was null or undefined when calling accountByIdGet.');
         }
@@ -73,21 +90,71 @@ export class AccountsApi extends runtime.BaseAPI {
             query: queryParameters,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => ConfidentifyAccountFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ConfidentifyAccountResponseFromJSON(jsonValue));
     }
 
     /**
      * Get account information
      */
-    async accountByIdGet(requestParameters: AccountByIdGetRequest): Promise<ConfidentifyAccount> {
+    async accountByIdGet(requestParameters: AccountByIdGetRequest): Promise<ConfidentifyAccountResponse> {
         const response = await this.accountByIdGetRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Update account information
+     */
+    async accountByIdUpdateRaw(requestParameters: AccountByIdUpdateRequest): Promise<runtime.ApiResponse<ConfidentifyAccountResponse>> {
+        if (requestParameters.accountId === null || requestParameters.accountId === undefined) {
+            throw new runtime.RequiredError('accountId','Required parameter requestParameters.accountId was null or undefined when calling accountByIdUpdate.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            if (typeof this.configuration.accessToken === 'function') {
+                headerParameters["Authorization"] = this.configuration.accessToken("oAuth2ClientCredentials", []);
+            } else {
+                headerParameters["Authorization"] = this.configuration.accessToken;
+            }
+        }
+
+        const response = await this.request({
+            path: `/accounts/{account_id}`.replace(`{${"account_id"}}`, encodeURIComponent(String(requestParameters.accountId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ConfidentifyAccountUpdateRequestToJSON(requestParameters.confidentifyAccountUpdateRequest),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ConfidentifyAccountResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Update account information
+     */
+    async accountByIdUpdate(requestParameters: AccountByIdUpdateRequest): Promise<ConfidentifyAccountResponse> {
+        const response = await this.accountByIdUpdateRaw(requestParameters);
         return await response.value();
     }
 
     /**
      * Get user information
      */
-    async userByIdGetRaw(requestParameters: UserByIdGetRequest): Promise<runtime.ApiResponse<ConfidentifyUser>> {
+    async userByIdGetRaw(requestParameters: UserByIdGetRequest): Promise<runtime.ApiResponse<ConfidentifyUserResponse>> {
         if (requestParameters.accountId === null || requestParameters.accountId === undefined) {
             throw new runtime.RequiredError('accountId','Required parameter requestParameters.accountId was null or undefined when calling userByIdGet.');
         }
@@ -124,14 +191,68 @@ export class AccountsApi extends runtime.BaseAPI {
             query: queryParameters,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => ConfidentifyUserFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ConfidentifyUserResponseFromJSON(jsonValue));
     }
 
     /**
      * Get user information
      */
-    async userByIdGet(requestParameters: UserByIdGetRequest): Promise<ConfidentifyUser> {
+    async userByIdGet(requestParameters: UserByIdGetRequest): Promise<ConfidentifyUserResponse> {
         const response = await this.userByIdGetRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Update user information
+     */
+    async userByIdUpdateRaw(requestParameters: UserByIdUpdateRequest): Promise<runtime.ApiResponse<ConfidentifyUserResponse>> {
+        if (requestParameters.accountId === null || requestParameters.accountId === undefined) {
+            throw new runtime.RequiredError('accountId','Required parameter requestParameters.accountId was null or undefined when calling userByIdUpdate.');
+        }
+
+        if (requestParameters.username === null || requestParameters.username === undefined) {
+            throw new runtime.RequiredError('username','Required parameter requestParameters.username was null or undefined when calling userByIdUpdate.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            if (typeof this.configuration.accessToken === 'function') {
+                headerParameters["Authorization"] = this.configuration.accessToken("oAuth2ClientCredentials", []);
+            } else {
+                headerParameters["Authorization"] = this.configuration.accessToken;
+            }
+        }
+
+        const response = await this.request({
+            path: `/accounts/{account_id}/users/{username}`.replace(`{${"account_id"}}`, encodeURIComponent(String(requestParameters.accountId))).replace(`{${"username"}}`, encodeURIComponent(String(requestParameters.username))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ConfidentifyUserUpdateRequestToJSON(requestParameters.confidentifyUserUpdateRequest),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ConfidentifyUserResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Update user information
+     */
+    async userByIdUpdate(requestParameters: UserByIdUpdateRequest): Promise<ConfidentifyUserResponse> {
+        const response = await this.userByIdUpdateRaw(requestParameters);
         return await response.value();
     }
 
