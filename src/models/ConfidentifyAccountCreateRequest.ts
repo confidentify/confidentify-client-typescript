@@ -16,60 +16,53 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface ConfidentifyAccountResponse
+ * @interface ConfidentifyAccountCreateRequest
  */
-export interface ConfidentifyAccountResponse {
-    /**
-     * A unique ID for the account. 
-     * @type {string}
-     * @memberof ConfidentifyAccountResponse
-     */
-    id?: string;
-    /**
-     * The username of the account owner user.
-     * @type {string}
-     * @memberof ConfidentifyAccountResponse
-     */
-    accountOwnerUsername?: string;
+export interface ConfidentifyAccountCreateRequest {
     /**
      * The name of the account, typically a company name. 
      * @type {string}
-     * @memberof ConfidentifyAccountResponse
+     * @memberof ConfidentifyAccountCreateRequest
      */
     name?: string;
     /**
      * Optional URL to an image representing the account.
      * @type {string}
-     * @memberof ConfidentifyAccountResponse
+     * @memberof ConfidentifyAccountCreateRequest
      */
     imageUrl?: string;
     /**
      * Optional URL to the account\'s website.
      * @type {string}
-     * @memberof ConfidentifyAccountResponse
+     * @memberof ConfidentifyAccountCreateRequest
      */
     websiteUrl?: string;
+    /**
+     * The username of the account owner user. Note that this field can only be specified by administrators. 
+     * @type {string}
+     * @memberof ConfidentifyAccountCreateRequest
+     */
+    accountOwnerUsername?: string;
 }
 
-export function ConfidentifyAccountResponseFromJSON(json: any): ConfidentifyAccountResponse {
-    return ConfidentifyAccountResponseFromJSONTyped(json, false);
+export function ConfidentifyAccountCreateRequestFromJSON(json: any): ConfidentifyAccountCreateRequest {
+    return ConfidentifyAccountCreateRequestFromJSONTyped(json, false);
 }
 
-export function ConfidentifyAccountResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): ConfidentifyAccountResponse {
+export function ConfidentifyAccountCreateRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ConfidentifyAccountCreateRequest {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'accountOwnerUsername': !exists(json, 'account_owner_username') ? undefined : json['account_owner_username'],
         'name': !exists(json, 'name') ? undefined : json['name'],
         'imageUrl': !exists(json, 'image_url') ? undefined : json['image_url'],
         'websiteUrl': !exists(json, 'website_url') ? undefined : json['website_url'],
+        'accountOwnerUsername': !exists(json, 'account_owner_username') ? undefined : json['account_owner_username'],
     };
 }
 
-export function ConfidentifyAccountResponseToJSON(value?: ConfidentifyAccountResponse | null): any {
+export function ConfidentifyAccountCreateRequestToJSON(value?: ConfidentifyAccountCreateRequest | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -78,11 +71,10 @@ export function ConfidentifyAccountResponseToJSON(value?: ConfidentifyAccountRes
     }
     return {
         
-        'id': value.id,
-        'account_owner_username': value.accountOwnerUsername,
         'name': value.name,
         'image_url': value.imageUrl,
         'website_url': value.websiteUrl,
+        'account_owner_username': value.accountOwnerUsername,
     };
 }
 

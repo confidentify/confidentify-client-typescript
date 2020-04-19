@@ -20,19 +20,19 @@ import { exists, mapValues } from '../runtime';
  */
 export interface ConfidentifyAccountUpdateRequest {
     /**
-     * 
+     * The name of the account, typically a company name. 
      * @type {string}
      * @memberof ConfidentifyAccountUpdateRequest
      */
     name?: string;
     /**
-     * 
+     * Optional URL to an image representing the account.
      * @type {string}
      * @memberof ConfidentifyAccountUpdateRequest
      */
     imageUrl?: string;
     /**
-     * 
+     * Optional URL to the account\'s website.
      * @type {string}
      * @memberof ConfidentifyAccountUpdateRequest
      */

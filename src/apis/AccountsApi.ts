@@ -15,6 +15,9 @@
 
 import * as runtime from '../runtime';
 import {
+    ConfidentifyAccountCreateRequest,
+    ConfidentifyAccountCreateRequestFromJSON,
+    ConfidentifyAccountCreateRequestToJSON,
     ConfidentifyAccountResponse,
     ConfidentifyAccountResponseFromJSON,
     ConfidentifyAccountResponseToJSON,
@@ -36,6 +39,10 @@ export interface AccountByIdGetRequest {
 export interface AccountByIdUpdateRequest {
     accountId: string;
     confidentifyAccountUpdateRequest?: ConfidentifyAccountUpdateRequest;
+}
+
+export interface AccountCreateRequest {
+    confidentifyAccountCreateRequest?: ConfidentifyAccountCreateRequest;
 }
 
 export interface UserByIdGetRequest {
@@ -148,6 +155,52 @@ export class AccountsApi extends runtime.BaseAPI {
      */
     async accountByIdUpdate(requestParameters: AccountByIdUpdateRequest): Promise<ConfidentifyAccountResponse> {
         const response = await this.accountByIdUpdateRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Create new account
+     */
+    async accountCreateRaw(requestParameters: AccountCreateRequest): Promise<runtime.ApiResponse<ConfidentifyAccountResponse>> {
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            if (typeof this.configuration.accessToken === 'function') {
+                headerParameters["Authorization"] = this.configuration.accessToken("oAuth2ClientCredentials", []);
+            } else {
+                headerParameters["Authorization"] = this.configuration.accessToken;
+            }
+        }
+
+        const response = await this.request({
+            path: `/accounts`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ConfidentifyAccountCreateRequestToJSON(requestParameters.confidentifyAccountCreateRequest),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ConfidentifyAccountResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Create new account
+     */
+    async accountCreate(requestParameters: AccountCreateRequest): Promise<ConfidentifyAccountResponse> {
+        const response = await this.accountCreateRaw(requestParameters);
         return await response.value();
     }
 
