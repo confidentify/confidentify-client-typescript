@@ -13,42 +13,35 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import {
-    DatasetSchemaProperty,
-    DatasetSchemaPropertyFromJSON,
-    DatasetSchemaPropertyFromJSONTyped,
-    DatasetSchemaPropertyToJSON,
-} from './';
-
 /**
  * 
  * @export
- * @interface DatasetSchema
+ * @interface DatasetRecordAllAllOf
  */
-export interface DatasetSchema {
+export interface DatasetRecordAllAllOf {
     /**
-     * 
-     * @type {{ [key: string]: DatasetSchemaProperty; }}
-     * @memberof DatasetSchema
+     * The time of creation of the record
+     * @type {Date}
+     * @memberof DatasetRecordAllAllOf
      */
-    properties?: { [key: string]: DatasetSchemaProperty; };
+    createdAt?: Date;
 }
 
-export function DatasetSchemaFromJSON(json: any): DatasetSchema {
-    return DatasetSchemaFromJSONTyped(json, false);
+export function DatasetRecordAllAllOfFromJSON(json: any): DatasetRecordAllAllOf {
+    return DatasetRecordAllAllOfFromJSONTyped(json, false);
 }
 
-export function DatasetSchemaFromJSONTyped(json: any, ignoreDiscriminator: boolean): DatasetSchema {
+export function DatasetRecordAllAllOfFromJSONTyped(json: any, ignoreDiscriminator: boolean): DatasetRecordAllAllOf {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'properties': !exists(json, 'properties') ? undefined : (mapValues(json['properties'], DatasetSchemaPropertyFromJSON)),
+        'createdAt': !exists(json, 'created_at') ? undefined : (new Date(json['created_at'])),
     };
 }
 
-export function DatasetSchemaToJSON(value?: DatasetSchema | null): any {
+export function DatasetRecordAllAllOfToJSON(value?: DatasetRecordAllAllOf | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,7 +50,7 @@ export function DatasetSchemaToJSON(value?: DatasetSchema | null): any {
     }
     return {
         
-        'properties': value.properties === undefined ? undefined : (mapValues(value.properties, DatasetSchemaPropertyToJSON)),
+        'created_at': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
     };
 }
 

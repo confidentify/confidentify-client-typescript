@@ -14,6 +14,14 @@
 
 import { exists, mapValues } from '../runtime';
 import {
+    PhoneResponseRecordProcessorOutcomeAllOf,
+    PhoneResponseRecordProcessorOutcomeAllOfFromJSON,
+    PhoneResponseRecordProcessorOutcomeAllOfFromJSONTyped,
+    PhoneResponseRecordProcessorOutcomeAllOfToJSON,
+    ProcessorOutcome,
+    ProcessorOutcomeFromJSON,
+    ProcessorOutcomeFromJSONTyped,
+    ProcessorOutcomeToJSON,
     ProcessorVerdict,
     ProcessorVerdictFromJSON,
     ProcessorVerdictFromJSONTyped,
@@ -23,34 +31,46 @@ import {
 /**
  * 
  * @export
- * @interface ProcessorOutcome
+ * @interface PhoneResponseRecordProcessorOutcome
  */
-export interface ProcessorOutcome {
+export interface PhoneResponseRecordProcessorOutcome {
     /**
      * 
      * @type {ProcessorVerdict}
-     * @memberof ProcessorOutcome
+     * @memberof PhoneResponseRecordProcessorOutcome
      */
     verdict?: ProcessorVerdict;
     /**
      * A list of informational entries about the processed entity.
      * @type {Array<string>}
-     * @memberof ProcessorOutcome
+     * @memberof PhoneResponseRecordProcessorOutcome
      */
     info?: Array<string>;
     /**
      * A list of warnings about the processed entity.
      * @type {Array<string>}
-     * @memberof ProcessorOutcome
+     * @memberof PhoneResponseRecordProcessorOutcome
      */
     warn?: Array<string>;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PhoneResponseRecordProcessorOutcome
+     */
+    isParsed?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PhoneResponseRecordProcessorOutcome
+     */
+    isPossible?: boolean;
 }
 
-export function ProcessorOutcomeFromJSON(json: any): ProcessorOutcome {
-    return ProcessorOutcomeFromJSONTyped(json, false);
+export function PhoneResponseRecordProcessorOutcomeFromJSON(json: any): PhoneResponseRecordProcessorOutcome {
+    return PhoneResponseRecordProcessorOutcomeFromJSONTyped(json, false);
 }
 
-export function ProcessorOutcomeFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProcessorOutcome {
+export function PhoneResponseRecordProcessorOutcomeFromJSONTyped(json: any, ignoreDiscriminator: boolean): PhoneResponseRecordProcessorOutcome {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -59,10 +79,12 @@ export function ProcessorOutcomeFromJSONTyped(json: any, ignoreDiscriminator: bo
         'verdict': !exists(json, 'verdict') ? undefined : ProcessorVerdictFromJSON(json['verdict']),
         'info': !exists(json, 'info') ? undefined : json['info'],
         'warn': !exists(json, 'warn') ? undefined : json['warn'],
+        'isParsed': !exists(json, 'is_parsed') ? undefined : json['is_parsed'],
+        'isPossible': !exists(json, 'is_possible') ? undefined : json['is_possible'],
     };
 }
 
-export function ProcessorOutcomeToJSON(value?: ProcessorOutcome | null): any {
+export function PhoneResponseRecordProcessorOutcomeToJSON(value?: PhoneResponseRecordProcessorOutcome | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -74,6 +96,8 @@ export function ProcessorOutcomeToJSON(value?: ProcessorOutcome | null): any {
         'verdict': ProcessorVerdictToJSON(value.verdict),
         'info': value.info,
         'warn': value.warn,
+        'is_parsed': value.isParsed,
+        'is_possible': value.isPossible,
     };
 }
 

@@ -13,42 +13,67 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    DatasetRecordAllAllOf,
+    DatasetRecordAllAllOfFromJSON,
+    DatasetRecordAllAllOfFromJSONTyped,
+    DatasetRecordAllAllOfToJSON,
+    DatasetRecordBase,
+    DatasetRecordBaseFromJSON,
+    DatasetRecordBaseFromJSONTyped,
+    DatasetRecordBaseToJSON,
+} from './';
+
 /**
  * 
  * @export
- * @interface DatasetListItemAllOf
+ * @interface DatasetRecordAll
  */
-export interface DatasetListItemAllOf {
+export interface DatasetRecordAll {
     /**
-     * The unique ID of the dataset
+     * A unique ID for the record 
      * @type {string}
-     * @memberof DatasetListItemAllOf
+     * @memberof DatasetRecordAll
      */
     id?: string;
     /**
-     * The HTTP path to the dataset
-     * @type {string}
-     * @memberof DatasetListItemAllOf
+     * The record\'s data 
+     * @type {object}
+     * @memberof DatasetRecordAll
      */
-    href?: string;
+    entity?: object;
+    /**
+     * A string which identifies the source of the record. 
+     * @type {string}
+     * @memberof DatasetRecordAll
+     */
+    recordSource?: string;
+    /**
+     * The time of creation of the record
+     * @type {Date}
+     * @memberof DatasetRecordAll
+     */
+    createdAt?: Date;
 }
 
-export function DatasetListItemAllOfFromJSON(json: any): DatasetListItemAllOf {
-    return DatasetListItemAllOfFromJSONTyped(json, false);
+export function DatasetRecordAllFromJSON(json: any): DatasetRecordAll {
+    return DatasetRecordAllFromJSONTyped(json, false);
 }
 
-export function DatasetListItemAllOfFromJSONTyped(json: any, ignoreDiscriminator: boolean): DatasetListItemAllOf {
+export function DatasetRecordAllFromJSONTyped(json: any, ignoreDiscriminator: boolean): DatasetRecordAll {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'id': !exists(json, 'id') ? undefined : json['id'],
-        'href': !exists(json, 'href') ? undefined : json['href'],
+        'entity': !exists(json, 'entity') ? undefined : json['entity'],
+        'recordSource': !exists(json, 'record_source') ? undefined : json['record_source'],
+        'createdAt': !exists(json, 'created_at') ? undefined : (new Date(json['created_at'])),
     };
 }
 
-export function DatasetListItemAllOfToJSON(value?: DatasetListItemAllOf | null): any {
+export function DatasetRecordAllToJSON(value?: DatasetRecordAll | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -58,7 +83,9 @@ export function DatasetListItemAllOfToJSON(value?: DatasetListItemAllOf | null):
     return {
         
         'id': value.id,
-        'href': value.href,
+        'entity': value.entity,
+        'record_source': value.recordSource,
+        'created_at': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
     };
 }
 

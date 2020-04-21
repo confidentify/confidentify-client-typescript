@@ -13,42 +13,42 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import {
-    DatasetSchemaProperty,
-    DatasetSchemaPropertyFromJSON,
-    DatasetSchemaPropertyFromJSONTyped,
-    DatasetSchemaPropertyToJSON,
-} from './';
-
 /**
  * 
  * @export
- * @interface DatasetSchema
+ * @interface PhoneResponseRecordProcessorOutcomeAllOf
  */
-export interface DatasetSchema {
+export interface PhoneResponseRecordProcessorOutcomeAllOf {
     /**
      * 
-     * @type {{ [key: string]: DatasetSchemaProperty; }}
-     * @memberof DatasetSchema
+     * @type {boolean}
+     * @memberof PhoneResponseRecordProcessorOutcomeAllOf
      */
-    properties?: { [key: string]: DatasetSchemaProperty; };
+    isParsed?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PhoneResponseRecordProcessorOutcomeAllOf
+     */
+    isPossible?: boolean;
 }
 
-export function DatasetSchemaFromJSON(json: any): DatasetSchema {
-    return DatasetSchemaFromJSONTyped(json, false);
+export function PhoneResponseRecordProcessorOutcomeAllOfFromJSON(json: any): PhoneResponseRecordProcessorOutcomeAllOf {
+    return PhoneResponseRecordProcessorOutcomeAllOfFromJSONTyped(json, false);
 }
 
-export function DatasetSchemaFromJSONTyped(json: any, ignoreDiscriminator: boolean): DatasetSchema {
+export function PhoneResponseRecordProcessorOutcomeAllOfFromJSONTyped(json: any, ignoreDiscriminator: boolean): PhoneResponseRecordProcessorOutcomeAllOf {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'properties': !exists(json, 'properties') ? undefined : (mapValues(json['properties'], DatasetSchemaPropertyFromJSON)),
+        'isParsed': !exists(json, 'is_parsed') ? undefined : json['is_parsed'],
+        'isPossible': !exists(json, 'is_possible') ? undefined : json['is_possible'],
     };
 }
 
-export function DatasetSchemaToJSON(value?: DatasetSchema | null): any {
+export function PhoneResponseRecordProcessorOutcomeAllOfToJSON(value?: PhoneResponseRecordProcessorOutcomeAllOf | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,7 +57,8 @@ export function DatasetSchemaToJSON(value?: DatasetSchema | null): any {
     }
     return {
         
-        'properties': value.properties === undefined ? undefined : (mapValues(value.properties, DatasetSchemaPropertyToJSON)),
+        'is_parsed': value.isParsed,
+        'is_possible': value.isPossible,
     };
 }
 

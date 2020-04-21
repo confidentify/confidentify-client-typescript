@@ -13,42 +13,49 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import {
-    DatasetSchemaProperty,
-    DatasetSchemaPropertyFromJSON,
-    DatasetSchemaPropertyFromJSONTyped,
-    DatasetSchemaPropertyToJSON,
-} from './';
-
 /**
  * 
  * @export
- * @interface DatasetSchema
+ * @interface DatasetRecordBase
  */
-export interface DatasetSchema {
+export interface DatasetRecordBase {
     /**
-     * 
-     * @type {{ [key: string]: DatasetSchemaProperty; }}
-     * @memberof DatasetSchema
+     * A unique ID for the record 
+     * @type {string}
+     * @memberof DatasetRecordBase
      */
-    properties?: { [key: string]: DatasetSchemaProperty; };
+    id?: string;
+    /**
+     * The record\'s data 
+     * @type {object}
+     * @memberof DatasetRecordBase
+     */
+    entity?: object;
+    /**
+     * A string which identifies the source of the record. 
+     * @type {string}
+     * @memberof DatasetRecordBase
+     */
+    recordSource?: string;
 }
 
-export function DatasetSchemaFromJSON(json: any): DatasetSchema {
-    return DatasetSchemaFromJSONTyped(json, false);
+export function DatasetRecordBaseFromJSON(json: any): DatasetRecordBase {
+    return DatasetRecordBaseFromJSONTyped(json, false);
 }
 
-export function DatasetSchemaFromJSONTyped(json: any, ignoreDiscriminator: boolean): DatasetSchema {
+export function DatasetRecordBaseFromJSONTyped(json: any, ignoreDiscriminator: boolean): DatasetRecordBase {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'properties': !exists(json, 'properties') ? undefined : (mapValues(json['properties'], DatasetSchemaPropertyFromJSON)),
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'entity': !exists(json, 'entity') ? undefined : json['entity'],
+        'recordSource': !exists(json, 'record_source') ? undefined : json['record_source'],
     };
 }
 
-export function DatasetSchemaToJSON(value?: DatasetSchema | null): any {
+export function DatasetRecordBaseToJSON(value?: DatasetRecordBase | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,7 +64,9 @@ export function DatasetSchemaToJSON(value?: DatasetSchema | null): any {
     }
     return {
         
-        'properties': value.properties === undefined ? undefined : (mapValues(value.properties, DatasetSchemaPropertyToJSON)),
+        'id': value.id,
+        'entity': value.entity,
+        'record_source': value.recordSource,
     };
 }
 

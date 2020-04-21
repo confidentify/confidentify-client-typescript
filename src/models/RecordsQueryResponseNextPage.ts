@@ -16,39 +16,46 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface DatasetListItemAllOf
+ * @interface RecordsQueryResponseNextPage
  */
-export interface DatasetListItemAllOf {
+export interface RecordsQueryResponseNextPage {
     /**
-     * The unique ID of the dataset
+     * Provides a link to the next page of records
      * @type {string}
-     * @memberof DatasetListItemAllOf
+     * @memberof RecordsQueryResponseNextPage
      */
-    id?: string;
+    url?: string;
     /**
-     * The HTTP path to the dataset
-     * @type {string}
-     * @memberof DatasetListItemAllOf
+     * Provides the raw value for the `page[size]` parameter, for clients that prefer to build the paging URL themselves.
+     * @type {number}
+     * @memberof RecordsQueryResponseNextPage
      */
-    href?: string;
+    paramPageSize?: number;
+    /**
+     * Provides the raw value for the `page[after]` parameter, for clients that prefer to build the paging URL themselves.
+     * @type {string}
+     * @memberof RecordsQueryResponseNextPage
+     */
+    paramPageAfter?: string;
 }
 
-export function DatasetListItemAllOfFromJSON(json: any): DatasetListItemAllOf {
-    return DatasetListItemAllOfFromJSONTyped(json, false);
+export function RecordsQueryResponseNextPageFromJSON(json: any): RecordsQueryResponseNextPage {
+    return RecordsQueryResponseNextPageFromJSONTyped(json, false);
 }
 
-export function DatasetListItemAllOfFromJSONTyped(json: any, ignoreDiscriminator: boolean): DatasetListItemAllOf {
+export function RecordsQueryResponseNextPageFromJSONTyped(json: any, ignoreDiscriminator: boolean): RecordsQueryResponseNextPage {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'href': !exists(json, 'href') ? undefined : json['href'],
+        'url': !exists(json, 'url') ? undefined : json['url'],
+        'paramPageSize': !exists(json, 'param_page_size') ? undefined : json['param_page_size'],
+        'paramPageAfter': !exists(json, 'param_page_after') ? undefined : json['param_page_after'],
     };
 }
 
-export function DatasetListItemAllOfToJSON(value?: DatasetListItemAllOf | null): any {
+export function RecordsQueryResponseNextPageToJSON(value?: RecordsQueryResponseNextPage | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,8 +64,9 @@ export function DatasetListItemAllOfToJSON(value?: DatasetListItemAllOf | null):
     }
     return {
         
-        'id': value.id,
-        'href': value.href,
+        'url': value.url,
+        'param_page_size': value.paramPageSize,
+        'param_page_after': value.paramPageAfter,
     };
 }
 
