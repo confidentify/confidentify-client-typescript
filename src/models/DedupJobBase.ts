@@ -16,46 +16,46 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface DatasetRecordBase
+ * @interface DedupJobBase
  */
-export interface DatasetRecordBase {
+export interface DedupJobBase {
     /**
-     * A unique ID for the record 
+     * A unique ID for the deduplication job 
      * @type {string}
-     * @memberof DatasetRecordBase
+     * @memberof DedupJobBase
      */
     id?: string;
     /**
-     * The record\'s data with keys matching the properties defined in the dataset\'s `schema` 
-     * @type {object}
-     * @memberof DatasetRecordBase
+     * Determines if the job is currently running.
+     * @type {boolean}
+     * @memberof DedupJobBase
      */
-    entity?: object;
+    running?: boolean;
     /**
-     * A string which identifies the source of the record. 
-     * @type {string}
-     * @memberof DatasetRecordBase
+     * The date and time of job creation.
+     * @type {Date}
+     * @memberof DedupJobBase
      */
-    recordSource?: string;
+    createdAt?: Date;
 }
 
-export function DatasetRecordBaseFromJSON(json: any): DatasetRecordBase {
-    return DatasetRecordBaseFromJSONTyped(json, false);
+export function DedupJobBaseFromJSON(json: any): DedupJobBase {
+    return DedupJobBaseFromJSONTyped(json, false);
 }
 
-export function DatasetRecordBaseFromJSONTyped(json: any, ignoreDiscriminator: boolean): DatasetRecordBase {
+export function DedupJobBaseFromJSONTyped(json: any, ignoreDiscriminator: boolean): DedupJobBase {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'id': !exists(json, 'id') ? undefined : json['id'],
-        'entity': !exists(json, 'entity') ? undefined : json['entity'],
-        'recordSource': !exists(json, 'record_source') ? undefined : json['record_source'],
+        'running': !exists(json, 'running') ? undefined : json['running'],
+        'createdAt': !exists(json, 'created_at') ? undefined : (new Date(json['created_at'])),
     };
 }
 
-export function DatasetRecordBaseToJSON(value?: DatasetRecordBase | null): any {
+export function DedupJobBaseToJSON(value?: DedupJobBase | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -65,8 +65,8 @@ export function DatasetRecordBaseToJSON(value?: DatasetRecordBase | null): any {
     return {
         
         'id': value.id,
-        'entity': value.entity,
-        'record_source': value.recordSource,
+        'running': value.running,
+        'created_at': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
     };
 }
 

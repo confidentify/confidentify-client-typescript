@@ -14,52 +14,66 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    DatasetRecordBase,
-    DatasetRecordBaseFromJSON,
-    DatasetRecordBaseFromJSONTyped,
-    DatasetRecordBaseToJSON,
-    NextPageInformation,
-    NextPageInformationFromJSON,
-    NextPageInformationFromJSONTyped,
-    NextPageInformationToJSON,
+    MatchVerdict,
+    MatchVerdictFromJSON,
+    MatchVerdictFromJSONTyped,
+    MatchVerdictToJSON,
+    MatchedRecord,
+    MatchedRecordFromJSON,
+    MatchedRecordFromJSONTyped,
+    MatchedRecordToJSON,
 } from './';
 
 /**
  * 
  * @export
- * @interface RecordsQueryResponse
+ * @interface MatchedPair
  */
-export interface RecordsQueryResponse {
-    /**
-     * The records retrieved from the query. 
-     * @type {Array<DatasetRecordBase>}
-     * @memberof RecordsQueryResponse
-     */
-    records?: Array<DatasetRecordBase>;
+export interface MatchedPair {
     /**
      * 
-     * @type {NextPageInformation}
-     * @memberof RecordsQueryResponse
+     * @type {MatchedRecord}
+     * @memberof MatchedPair
      */
-    nextPage?: NextPageInformation;
+    record1?: MatchedRecord;
+    /**
+     * 
+     * @type {MatchedRecord}
+     * @memberof MatchedPair
+     */
+    record2?: MatchedRecord;
+    /**
+     * 
+     * @type {MatchVerdict}
+     * @memberof MatchedPair
+     */
+    verdict?: MatchVerdict;
+    /**
+     * Detailed score values for information
+     * @type {object}
+     * @memberof MatchedPair
+     */
+    scores?: object;
 }
 
-export function RecordsQueryResponseFromJSON(json: any): RecordsQueryResponse {
-    return RecordsQueryResponseFromJSONTyped(json, false);
+export function MatchedPairFromJSON(json: any): MatchedPair {
+    return MatchedPairFromJSONTyped(json, false);
 }
 
-export function RecordsQueryResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): RecordsQueryResponse {
+export function MatchedPairFromJSONTyped(json: any, ignoreDiscriminator: boolean): MatchedPair {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'records': !exists(json, 'records') ? undefined : ((json['records'] as Array<any>).map(DatasetRecordBaseFromJSON)),
-        'nextPage': !exists(json, 'next_page') ? undefined : NextPageInformationFromJSON(json['next_page']),
+        'record1': !exists(json, 'record1') ? undefined : MatchedRecordFromJSON(json['record1']),
+        'record2': !exists(json, 'record2') ? undefined : MatchedRecordFromJSON(json['record2']),
+        'verdict': !exists(json, 'verdict') ? undefined : MatchVerdictFromJSON(json['verdict']),
+        'scores': !exists(json, 'scores') ? undefined : json['scores'],
     };
 }
 
-export function RecordsQueryResponseToJSON(value?: RecordsQueryResponse | null): any {
+export function MatchedPairToJSON(value?: MatchedPair | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -68,8 +82,10 @@ export function RecordsQueryResponseToJSON(value?: RecordsQueryResponse | null):
     }
     return {
         
-        'records': value.records === undefined ? undefined : ((value.records as Array<any>).map(DatasetRecordBaseToJSON)),
-        'next_page': NextPageInformationToJSON(value.nextPage),
+        'record1': MatchedRecordToJSON(value.record1),
+        'record2': MatchedRecordToJSON(value.record2),
+        'verdict': MatchVerdictToJSON(value.verdict),
+        'scores': value.scores,
     };
 }
 

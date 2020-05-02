@@ -13,49 +13,53 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    MatchedPair,
+    MatchedPairFromJSON,
+    MatchedPairFromJSONTyped,
+    MatchedPairToJSON,
+    NextPageInformation,
+    NextPageInformationFromJSON,
+    NextPageInformationFromJSONTyped,
+    NextPageInformationToJSON,
+} from './';
+
 /**
  * 
  * @export
- * @interface DatasetRecordBase
+ * @interface DedupJobPairsQueryResponse
  */
-export interface DatasetRecordBase {
+export interface DedupJobPairsQueryResponse {
     /**
-     * A unique ID for the record 
-     * @type {string}
-     * @memberof DatasetRecordBase
+     * The record pairs retrieved from the query. 
+     * @type {Array<MatchedPair>}
+     * @memberof DedupJobPairsQueryResponse
      */
-    id?: string;
+    pairs?: Array<MatchedPair>;
     /**
-     * The record\'s data with keys matching the properties defined in the dataset\'s `schema` 
-     * @type {object}
-     * @memberof DatasetRecordBase
+     * 
+     * @type {NextPageInformation}
+     * @memberof DedupJobPairsQueryResponse
      */
-    entity?: object;
-    /**
-     * A string which identifies the source of the record. 
-     * @type {string}
-     * @memberof DatasetRecordBase
-     */
-    recordSource?: string;
+    nextPage?: NextPageInformation;
 }
 
-export function DatasetRecordBaseFromJSON(json: any): DatasetRecordBase {
-    return DatasetRecordBaseFromJSONTyped(json, false);
+export function DedupJobPairsQueryResponseFromJSON(json: any): DedupJobPairsQueryResponse {
+    return DedupJobPairsQueryResponseFromJSONTyped(json, false);
 }
 
-export function DatasetRecordBaseFromJSONTyped(json: any, ignoreDiscriminator: boolean): DatasetRecordBase {
+export function DedupJobPairsQueryResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): DedupJobPairsQueryResponse {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'entity': !exists(json, 'entity') ? undefined : json['entity'],
-        'recordSource': !exists(json, 'record_source') ? undefined : json['record_source'],
+        'pairs': !exists(json, 'pairs') ? undefined : ((json['pairs'] as Array<any>).map(MatchedPairFromJSON)),
+        'nextPage': !exists(json, 'next_page') ? undefined : NextPageInformationFromJSON(json['next_page']),
     };
 }
 
-export function DatasetRecordBaseToJSON(value?: DatasetRecordBase | null): any {
+export function DedupJobPairsQueryResponseToJSON(value?: DedupJobPairsQueryResponse | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -64,9 +68,8 @@ export function DatasetRecordBaseToJSON(value?: DatasetRecordBase | null): any {
     }
     return {
         
-        'id': value.id,
-        'entity': value.entity,
-        'record_source': value.recordSource,
+        'pairs': value.pairs === undefined ? undefined : ((value.pairs as Array<any>).map(MatchedPairToJSON)),
+        'next_page': NextPageInformationToJSON(value.nextPage),
     };
 }
 

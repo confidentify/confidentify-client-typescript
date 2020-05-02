@@ -12,28 +12,46 @@
  * Do not edit the class manually.
  */
 
+import { exists, mapValues } from '../runtime';
 /**
- * Defines the decision-making verdict from processing a record.
+ * 
  * @export
- * @enum {string}
+ * @interface MatchedRecord
  */
-export enum ProcessorVerdict {
-    Corrected = 'corrected',
-    Valid = 'valid',
-    Questionable = 'questionable',
-    Invalid = 'invalid',
-    Error = 'error'
+export interface MatchedRecord {
+    /**
+     * The record ID.
+     * @type {string}
+     * @memberof MatchedRecord
+     */
+    id?: string;
 }
 
-export function ProcessorVerdictFromJSON(json: any): ProcessorVerdict {
-    return ProcessorVerdictFromJSONTyped(json, false);
+export function MatchedRecordFromJSON(json: any): MatchedRecord {
+    return MatchedRecordFromJSONTyped(json, false);
 }
 
-export function ProcessorVerdictFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProcessorVerdict {
-    return json as ProcessorVerdict;
+export function MatchedRecordFromJSONTyped(json: any, ignoreDiscriminator: boolean): MatchedRecord {
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'id': !exists(json, 'id') ? undefined : json['id'],
+    };
 }
 
-export function ProcessorVerdictToJSON(value?: ProcessorVerdict | null): any {
-    return value as any;
+export function MatchedRecordToJSON(value?: MatchedRecord | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'id': value.id,
+    };
 }
+
 

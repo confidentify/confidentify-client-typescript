@@ -37,7 +37,7 @@ export interface DatasetRecordAll {
      */
     id?: string;
     /**
-     * The record\'s data 
+     * The record\'s data with keys matching the properties defined in the dataset\'s `schema` 
      * @type {object}
      * @memberof DatasetRecordAll
      */

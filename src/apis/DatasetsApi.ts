@@ -86,6 +86,7 @@ export interface RecordsGetRequest {
     datasetId: string;
     pageSize?: number;
     pageAfter?: string;
+    filterIds?: string;
 }
 
 export interface RecordsPostRequest {
@@ -512,6 +513,10 @@ export class DatasetsApi extends runtime.BaseAPI {
 
         if (requestParameters.pageAfter !== undefined) {
             queryParameters['page[after]'] = requestParameters.pageAfter;
+        }
+
+        if (requestParameters.filterIds !== undefined) {
+            queryParameters['filter_ids'] = requestParameters.filterIds;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};

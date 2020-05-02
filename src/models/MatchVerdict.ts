@@ -13,27 +13,24 @@
  */
 
 /**
- * Defines the decision-making verdict from processing a record.
+ * Defines the decision-making verdict resulting from a record matching operation.
  * @export
  * @enum {string}
  */
-export enum ProcessorVerdict {
-    Corrected = 'corrected',
-    Valid = 'valid',
-    Questionable = 'questionable',
-    Invalid = 'invalid',
-    Error = 'error'
+export enum MatchVerdict {
+    Matched = 'matched',
+    Questionable = 'questionable'
 }
 
-export function ProcessorVerdictFromJSON(json: any): ProcessorVerdict {
-    return ProcessorVerdictFromJSONTyped(json, false);
+export function MatchVerdictFromJSON(json: any): MatchVerdict {
+    return MatchVerdictFromJSONTyped(json, false);
 }
 
-export function ProcessorVerdictFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProcessorVerdict {
-    return json as ProcessorVerdict;
+export function MatchVerdictFromJSONTyped(json: any, ignoreDiscriminator: boolean): MatchVerdict {
+    return json as MatchVerdict;
 }
 
-export function ProcessorVerdictToJSON(value?: ProcessorVerdict | null): any {
+export function MatchVerdictToJSON(value?: MatchVerdict | null): any {
     return value as any;
 }
 

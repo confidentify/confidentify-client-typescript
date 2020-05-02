@@ -14,48 +14,41 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * 
+ * Provides the results of the job. If the job is still running, there may still be preliminary results available.
  * @export
- * @interface DatasetRecordBase
+ * @interface DedupJobAllAllOfResults
  */
-export interface DatasetRecordBase {
+export interface DedupJobAllAllOfResults {
     /**
-     * A unique ID for the record 
-     * @type {string}
-     * @memberof DatasetRecordBase
+     * Number of record pairs matched with a \'matched\' verdict.
+     * @type {number}
+     * @memberof DedupJobAllAllOfResults
      */
-    id?: string;
+    pairsMatched?: number;
     /**
-     * The record\'s data with keys matching the properties defined in the dataset\'s `schema` 
-     * @type {object}
-     * @memberof DatasetRecordBase
+     * Number of record pairs matched with a \'questionable\' verdict.
+     * @type {number}
+     * @memberof DedupJobAllAllOfResults
      */
-    entity?: object;
-    /**
-     * A string which identifies the source of the record. 
-     * @type {string}
-     * @memberof DatasetRecordBase
-     */
-    recordSource?: string;
+    pairsQuestionable?: number;
 }
 
-export function DatasetRecordBaseFromJSON(json: any): DatasetRecordBase {
-    return DatasetRecordBaseFromJSONTyped(json, false);
+export function DedupJobAllAllOfResultsFromJSON(json: any): DedupJobAllAllOfResults {
+    return DedupJobAllAllOfResultsFromJSONTyped(json, false);
 }
 
-export function DatasetRecordBaseFromJSONTyped(json: any, ignoreDiscriminator: boolean): DatasetRecordBase {
+export function DedupJobAllAllOfResultsFromJSONTyped(json: any, ignoreDiscriminator: boolean): DedupJobAllAllOfResults {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'entity': !exists(json, 'entity') ? undefined : json['entity'],
-        'recordSource': !exists(json, 'record_source') ? undefined : json['record_source'],
+        'pairsMatched': !exists(json, 'pairs_matched') ? undefined : json['pairs_matched'],
+        'pairsQuestionable': !exists(json, 'pairs_questionable') ? undefined : json['pairs_questionable'],
     };
 }
 
-export function DatasetRecordBaseToJSON(value?: DatasetRecordBase | null): any {
+export function DedupJobAllAllOfResultsToJSON(value?: DedupJobAllAllOfResults | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -64,9 +57,8 @@ export function DatasetRecordBaseToJSON(value?: DatasetRecordBase | null): any {
     }
     return {
         
-        'id': value.id,
-        'entity': value.entity,
-        'record_source': value.recordSource,
+        'pairs_matched': value.pairsMatched,
+        'pairs_questionable': value.pairsQuestionable,
     };
 }
 

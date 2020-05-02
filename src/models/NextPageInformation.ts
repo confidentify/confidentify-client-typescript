@@ -16,46 +16,46 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface DatasetRecordBase
+ * @interface NextPageInformation
  */
-export interface DatasetRecordBase {
+export interface NextPageInformation {
     /**
-     * A unique ID for the record 
+     * Provides a link to the next page of data
      * @type {string}
-     * @memberof DatasetRecordBase
+     * @memberof NextPageInformation
      */
-    id?: string;
+    url?: string;
     /**
-     * The record\'s data with keys matching the properties defined in the dataset\'s `schema` 
-     * @type {object}
-     * @memberof DatasetRecordBase
+     * Provides the raw value for the `page[size]` parameter, for clients that prefer to build the paging URL themselves.
+     * @type {number}
+     * @memberof NextPageInformation
      */
-    entity?: object;
+    paramPageSize?: number;
     /**
-     * A string which identifies the source of the record. 
+     * Provides the raw value for the `page[after]` parameter, for clients that prefer to build the paging URL themselves.
      * @type {string}
-     * @memberof DatasetRecordBase
+     * @memberof NextPageInformation
      */
-    recordSource?: string;
+    paramPageAfter?: string;
 }
 
-export function DatasetRecordBaseFromJSON(json: any): DatasetRecordBase {
-    return DatasetRecordBaseFromJSONTyped(json, false);
+export function NextPageInformationFromJSON(json: any): NextPageInformation {
+    return NextPageInformationFromJSONTyped(json, false);
 }
 
-export function DatasetRecordBaseFromJSONTyped(json: any, ignoreDiscriminator: boolean): DatasetRecordBase {
+export function NextPageInformationFromJSONTyped(json: any, ignoreDiscriminator: boolean): NextPageInformation {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'entity': !exists(json, 'entity') ? undefined : json['entity'],
-        'recordSource': !exists(json, 'record_source') ? undefined : json['record_source'],
+        'url': !exists(json, 'url') ? undefined : json['url'],
+        'paramPageSize': !exists(json, 'param_page_size') ? undefined : json['param_page_size'],
+        'paramPageAfter': !exists(json, 'param_page_after') ? undefined : json['param_page_after'],
     };
 }
 
-export function DatasetRecordBaseToJSON(value?: DatasetRecordBase | null): any {
+export function NextPageInformationToJSON(value?: NextPageInformation | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -64,9 +64,9 @@ export function DatasetRecordBaseToJSON(value?: DatasetRecordBase | null): any {
     }
     return {
         
-        'id': value.id,
-        'entity': value.entity,
-        'record_source': value.recordSource,
+        'url': value.url,
+        'param_page_size': value.paramPageSize,
+        'param_page_after': value.paramPageAfter,
     };
 }
 

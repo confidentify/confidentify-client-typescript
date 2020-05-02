@@ -12,28 +12,46 @@
  * Do not edit the class manually.
  */
 
+import { exists, mapValues } from '../runtime';
 /**
- * Defines the decision-making verdict from processing a record.
+ * 
  * @export
- * @enum {string}
+ * @interface DedupJobCreateRequest
  */
-export enum ProcessorVerdict {
-    Corrected = 'corrected',
-    Valid = 'valid',
-    Questionable = 'questionable',
-    Invalid = 'invalid',
-    Error = 'error'
+export interface DedupJobCreateRequest {
+    /**
+     * The ID of the dataset to target with the deduplication job.
+     * @type {string}
+     * @memberof DedupJobCreateRequest
+     */
+    datasetId?: string;
 }
 
-export function ProcessorVerdictFromJSON(json: any): ProcessorVerdict {
-    return ProcessorVerdictFromJSONTyped(json, false);
+export function DedupJobCreateRequestFromJSON(json: any): DedupJobCreateRequest {
+    return DedupJobCreateRequestFromJSONTyped(json, false);
 }
 
-export function ProcessorVerdictFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProcessorVerdict {
-    return json as ProcessorVerdict;
+export function DedupJobCreateRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): DedupJobCreateRequest {
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'datasetId': !exists(json, 'dataset_id') ? undefined : json['dataset_id'],
+    };
 }
 
-export function ProcessorVerdictToJSON(value?: ProcessorVerdict | null): any {
-    return value as any;
+export function DedupJobCreateRequestToJSON(value?: DedupJobCreateRequest | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'dataset_id': value.datasetId,
+    };
 }
+
 
