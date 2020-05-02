@@ -48,13 +48,13 @@ export interface DedupJobByIdPairsGetRequest {
     pageAfter?: string;
 }
 
-export interface DedupJobCreateRequest {
-    dedupJobCreateRequest: DedupJobCreateRequest;
-}
-
 export interface DedupJobsGetRequest {
     pageSize?: number;
     pageAfter?: string;
+}
+
+export interface DedupJobsPostRequest {
+    dedupJobCreateRequest: DedupJobCreateRequest;
 }
 
 /**
@@ -219,56 +219,6 @@ export class MatchingApi extends runtime.BaseAPI {
     }
 
     /**
-     * Create deduplication job
-     */
-    async dedupJobCreateRaw(requestParameters: DedupJobCreateRequest): Promise<runtime.ApiResponse<DedupJobAll>> {
-        if (requestParameters.dedupJobCreateRequest === null || requestParameters.dedupJobCreateRequest === undefined) {
-            throw new runtime.RequiredError('dedupJobCreateRequest','Required parameter requestParameters.dedupJobCreateRequest was null or undefined when calling dedupJobCreate.');
-        }
-
-        const queryParameters: runtime.HTTPQuery = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        if (this.configuration && this.configuration.accessToken) {
-            // oauth required
-            if (typeof this.configuration.accessToken === 'function') {
-                headerParameters["Authorization"] = this.configuration.accessToken("oAuth2ClientCredentials", []);
-            } else {
-                headerParameters["Authorization"] = this.configuration.accessToken;
-            }
-        }
-
-        const response = await this.request({
-            path: `/dedup/jobs`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: DedupJobCreateRequestToJSON(requestParameters.dedupJobCreateRequest),
-        });
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => DedupJobAllFromJSON(jsonValue));
-    }
-
-    /**
-     * Create deduplication job
-     */
-    async dedupJobCreate(requestParameters: DedupJobCreateRequest): Promise<DedupJobAll> {
-        const response = await this.dedupJobCreateRaw(requestParameters);
-        return await response.value();
-    }
-
-    /**
      * Get deduplication jobs
      */
     async dedupJobsGetRaw(requestParameters: DedupJobsGetRequest): Promise<runtime.ApiResponse<DedupJobsQueryResponse>> {
@@ -316,6 +266,56 @@ export class MatchingApi extends runtime.BaseAPI {
      */
     async dedupJobsGet(requestParameters: DedupJobsGetRequest): Promise<DedupJobsQueryResponse> {
         const response = await this.dedupJobsGetRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Create deduplication job
+     */
+    async dedupJobsPostRaw(requestParameters: DedupJobsPostRequest): Promise<runtime.ApiResponse<DedupJobAll>> {
+        if (requestParameters.dedupJobCreateRequest === null || requestParameters.dedupJobCreateRequest === undefined) {
+            throw new runtime.RequiredError('dedupJobCreateRequest','Required parameter requestParameters.dedupJobCreateRequest was null or undefined when calling dedupJobsPost.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            if (typeof this.configuration.accessToken === 'function') {
+                headerParameters["Authorization"] = this.configuration.accessToken("oAuth2ClientCredentials", []);
+            } else {
+                headerParameters["Authorization"] = this.configuration.accessToken;
+            }
+        }
+
+        const response = await this.request({
+            path: `/dedup/jobs`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: DedupJobCreateRequestToJSON(requestParameters.dedupJobCreateRequest),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => DedupJobAllFromJSON(jsonValue));
+    }
+
+    /**
+     * Create deduplication job
+     */
+    async dedupJobsPost(requestParameters: DedupJobsPostRequest): Promise<DedupJobAll> {
+        const response = await this.dedupJobsPostRaw(requestParameters);
         return await response.value();
     }
 
