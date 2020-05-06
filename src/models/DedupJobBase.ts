@@ -26,6 +26,12 @@ export interface DedupJobBase {
      */
     id?: string;
     /**
+     * An optional name for the job 
+     * @type {string}
+     * @memberof DedupJobBase
+     */
+    name?: string;
+    /**
      * Determines if the job is currently running.
      * @type {boolean}
      * @memberof DedupJobBase
@@ -50,6 +56,7 @@ export function DedupJobBaseFromJSONTyped(json: any, ignoreDiscriminator: boolea
     return {
         
         'id': !exists(json, 'id') ? undefined : json['id'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
         'running': !exists(json, 'running') ? undefined : json['running'],
         'createdAt': !exists(json, 'created_at') ? undefined : (new Date(json['created_at'])),
     };
@@ -65,6 +72,7 @@ export function DedupJobBaseToJSON(value?: DedupJobBase | null): any {
     return {
         
         'id': value.id,
+        'name': value.name,
         'running': value.running,
         'created_at': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
     };

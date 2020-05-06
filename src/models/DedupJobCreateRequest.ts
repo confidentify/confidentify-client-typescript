@@ -25,6 +25,12 @@ export interface DedupJobCreateRequest {
      * @memberof DedupJobCreateRequest
      */
     datasetId?: string;
+    /**
+     * An optional name for the job 
+     * @type {string}
+     * @memberof DedupJobCreateRequest
+     */
+    name?: string;
 }
 
 export function DedupJobCreateRequestFromJSON(json: any): DedupJobCreateRequest {
@@ -38,6 +44,7 @@ export function DedupJobCreateRequestFromJSONTyped(json: any, ignoreDiscriminato
     return {
         
         'datasetId': !exists(json, 'dataset_id') ? undefined : json['dataset_id'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
     };
 }
 
@@ -51,6 +58,7 @@ export function DedupJobCreateRequestToJSON(value?: DedupJobCreateRequest | null
     return {
         
         'dataset_id': value.datasetId,
+        'name': value.name,
     };
 }
 

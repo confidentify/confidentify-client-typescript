@@ -14,6 +14,10 @@
 
 import { exists, mapValues } from '../runtime';
 import {
+    DedupJobAllAllOfProgress,
+    DedupJobAllAllOfProgressFromJSON,
+    DedupJobAllAllOfProgressFromJSONTyped,
+    DedupJobAllAllOfProgressToJSON,
     DedupJobAllAllOfResults,
     DedupJobAllAllOfResultsFromJSON,
     DedupJobAllAllOfResultsFromJSONTyped,
@@ -52,6 +56,12 @@ export interface DedupJobAllAllOf {
     phase?: string;
     /**
      * 
+     * @type {DedupJobAllAllOfProgress}
+     * @memberof DedupJobAllAllOf
+     */
+    progress?: DedupJobAllAllOfProgress;
+    /**
+     * 
      * @type {DedupJobAllAllOfResults}
      * @memberof DedupJobAllAllOf
      */
@@ -72,6 +82,7 @@ export function DedupJobAllAllOfFromJSONTyped(json: any, ignoreDiscriminator: bo
         'startedAt': !exists(json, 'started_at') ? undefined : (new Date(json['started_at'])),
         'finishedAt': !exists(json, 'finished_at') ? undefined : (new Date(json['finished_at'])),
         'phase': !exists(json, 'phase') ? undefined : json['phase'],
+        'progress': !exists(json, 'progress') ? undefined : DedupJobAllAllOfProgressFromJSON(json['progress']),
         'results': !exists(json, 'results') ? undefined : DedupJobAllAllOfResultsFromJSON(json['results']),
     };
 }
@@ -89,6 +100,7 @@ export function DedupJobAllAllOfToJSON(value?: DedupJobAllAllOf | null): any {
         'started_at': value.startedAt === undefined ? undefined : (value.startedAt.toISOString()),
         'finished_at': value.finishedAt === undefined ? undefined : (value.finishedAt.toISOString()),
         'phase': value.phase,
+        'progress': DedupJobAllAllOfProgressToJSON(value.progress),
         'results': DedupJobAllAllOfResultsToJSON(value.results),
     };
 }

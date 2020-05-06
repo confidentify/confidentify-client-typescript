@@ -49,6 +49,7 @@ export interface DedupJobByIdPairsGetRequest {
 }
 
 export interface DedupJobsGetRequest {
+    filterDatasetId?: string;
     pageSize?: number;
     pageAfter?: string;
 }
@@ -223,6 +224,10 @@ export class MatchingApi extends runtime.BaseAPI {
      */
     async dedupJobsGetRaw(requestParameters: DedupJobsGetRequest): Promise<runtime.ApiResponse<DedupJobsQueryResponse>> {
         const queryParameters: runtime.HTTPQuery = {};
+
+        if (requestParameters.filterDatasetId !== undefined) {
+            queryParameters['filter_dataset_id'] = requestParameters.filterDatasetId;
+        }
 
         if (requestParameters.pageSize !== undefined) {
             queryParameters['page[size]'] = requestParameters.pageSize;

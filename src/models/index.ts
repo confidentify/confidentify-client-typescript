@@ -23,6 +23,7 @@ export * from './DatasetSchemaPropertyType';
 export * from './DatasetStats';
 export * from './DedupJobAll';
 export * from './DedupJobAllAllOf';
+export * from './DedupJobAllAllOfProgress';
 export * from './DedupJobAllAllOfResults';
 export * from './DedupJobBase';
 export * from './DedupJobCreateRequest';
