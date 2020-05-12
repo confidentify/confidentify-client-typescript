@@ -22,6 +22,7 @@ export enum DatasetSchemaPropertyType {
     Integer = 'integer',
     Array = 'array',
     PersonName = 'person_name',
+    OrganizationName = 'organization_name',
     Email = 'email',
     Phone = 'phone',
     Country = 'country',

@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    DedupJobBaseResults,
+    DedupJobBaseResultsFromJSON,
+    DedupJobBaseResultsFromJSONTyped,
+    DedupJobBaseResultsToJSON,
+} from './';
+
 /**
  * 
  * @export
@@ -43,6 +50,12 @@ export interface DedupJobBase {
      * @memberof DedupJobBase
      */
     createdAt?: Date;
+    /**
+     * 
+     * @type {DedupJobBaseResults}
+     * @memberof DedupJobBase
+     */
+    results?: DedupJobBaseResults;
 }
 
 export function DedupJobBaseFromJSON(json: any): DedupJobBase {
@@ -59,6 +72,7 @@ export function DedupJobBaseFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'name': !exists(json, 'name') ? undefined : json['name'],
         'running': !exists(json, 'running') ? undefined : json['running'],
         'createdAt': !exists(json, 'created_at') ? undefined : (new Date(json['created_at'])),
+        'results': !exists(json, 'results') ? undefined : DedupJobBaseResultsFromJSON(json['results']),
     };
 }
 
@@ -75,6 +89,7 @@ export function DedupJobBaseToJSON(value?: DedupJobBase | null): any {
         'name': value.name,
         'running': value.running,
         'created_at': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
+        'results': DedupJobBaseResultsToJSON(value.results),
     };
 }
 

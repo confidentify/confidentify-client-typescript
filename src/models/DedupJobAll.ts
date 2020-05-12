@@ -22,14 +22,14 @@ import {
     DedupJobAllAllOfProgressFromJSON,
     DedupJobAllAllOfProgressFromJSONTyped,
     DedupJobAllAllOfProgressToJSON,
-    DedupJobAllAllOfResults,
-    DedupJobAllAllOfResultsFromJSON,
-    DedupJobAllAllOfResultsFromJSONTyped,
-    DedupJobAllAllOfResultsToJSON,
     DedupJobBase,
     DedupJobBaseFromJSON,
     DedupJobBaseFromJSONTyped,
     DedupJobBaseToJSON,
+    DedupJobBaseResults,
+    DedupJobBaseResultsFromJSON,
+    DedupJobBaseResultsFromJSONTyped,
+    DedupJobBaseResultsToJSON,
 } from './';
 
 /**
@@ -63,6 +63,18 @@ export interface DedupJobAll {
      */
     createdAt?: Date;
     /**
+     * 
+     * @type {DedupJobBaseResults}
+     * @memberof DedupJobAll
+     */
+    results?: DedupJobBaseResults;
+    /**
+     * The username of the user who created the job
+     * @type {string}
+     * @memberof DedupJobAll
+     */
+    createdBy?: string;
+    /**
      * The ID of the dataset that the deduplication job is targeting.
      * @type {string}
      * @memberof DedupJobAll
@@ -92,12 +104,6 @@ export interface DedupJobAll {
      * @memberof DedupJobAll
      */
     progress?: DedupJobAllAllOfProgress;
-    /**
-     * 
-     * @type {DedupJobAllAllOfResults}
-     * @memberof DedupJobAll
-     */
-    results?: DedupJobAllAllOfResults;
 }
 
 export function DedupJobAllFromJSON(json: any): DedupJobAll {
@@ -114,12 +120,13 @@ export function DedupJobAllFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'name': !exists(json, 'name') ? undefined : json['name'],
         'running': !exists(json, 'running') ? undefined : json['running'],
         'createdAt': !exists(json, 'created_at') ? undefined : (new Date(json['created_at'])),
+        'results': !exists(json, 'results') ? undefined : DedupJobBaseResultsFromJSON(json['results']),
+        'createdBy': !exists(json, 'created_by') ? undefined : json['created_by'],
         'datasetId': !exists(json, 'dataset_id') ? undefined : json['dataset_id'],
         'startedAt': !exists(json, 'started_at') ? undefined : (new Date(json['started_at'])),
         'finishedAt': !exists(json, 'finished_at') ? undefined : (new Date(json['finished_at'])),
         'phase': !exists(json, 'phase') ? undefined : json['phase'],
         'progress': !exists(json, 'progress') ? undefined : DedupJobAllAllOfProgressFromJSON(json['progress']),
-        'results': !exists(json, 'results') ? undefined : DedupJobAllAllOfResultsFromJSON(json['results']),
     };
 }
 
@@ -136,12 +143,13 @@ export function DedupJobAllToJSON(value?: DedupJobAll | null): any {
         'name': value.name,
         'running': value.running,
         'created_at': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
+        'results': DedupJobBaseResultsToJSON(value.results),
+        'created_by': value.createdBy,
         'dataset_id': value.datasetId,
         'started_at': value.startedAt === undefined ? undefined : (value.startedAt.toISOString()),
         'finished_at': value.finishedAt === undefined ? undefined : (value.finishedAt.toISOString()),
         'phase': value.phase,
         'progress': DedupJobAllAllOfProgressToJSON(value.progress),
-        'results': DedupJobAllAllOfResultsToJSON(value.results),
     };
 }
 

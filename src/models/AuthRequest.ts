@@ -32,6 +32,12 @@ export interface AuthRequest {
      */
     password?: string;
     /**
+     * A previously issued `refresh_token` value to provide for authentication.
+     * @type {string}
+     * @memberof AuthRequest
+     */
+    refreshToken?: string;
+    /**
      * Access token issued by Google to use for authentication.
      * @type {string}
      * @memberof AuthRequest
@@ -63,6 +69,7 @@ export function AuthRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean
         
         'username': !exists(json, 'username') ? undefined : json['username'],
         'password': !exists(json, 'password') ? undefined : json['password'],
+        'refreshToken': !exists(json, 'refresh_token') ? undefined : json['refresh_token'],
         'googleAccessToken': !exists(json, 'google_access_token') ? undefined : json['google_access_token'],
         'expireAfterSeconds': !exists(json, 'expire_after_seconds') ? undefined : json['expire_after_seconds'],
         'serviceGrants': !exists(json, 'service_grants') ? undefined : json['service_grants'],
@@ -80,6 +87,7 @@ export function AuthRequestToJSON(value?: AuthRequest | null): any {
         
         'username': value.username,
         'password': value.password,
+        'refresh_token': value.refreshToken,
         'google_access_token': value.googleAccessToken,
         'expire_after_seconds': value.expireAfterSeconds,
         'service_grants': value.serviceGrants,

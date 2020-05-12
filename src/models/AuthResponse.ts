@@ -26,6 +26,12 @@ export interface AuthResponse {
      */
     accessToken?: string;
     /**
+     * A refresh token that can be used to get new access tokens for longer periods of time (up to 7 days). For long-running sessions and clients that want to keep the connection to Confidentify open, we recommend storing refresh tokens instead of other types of credentials. 
+     * @type {string}
+     * @memberof AuthResponse
+     */
+    refreshToken?: string;
+    /**
      * Indicates whether the user has a registered account or not. If authentication was able to validate user credentials but an account has not been registered for this user, the user will be able to call a limited set of endpoints in order to register an account. 
      * @type {boolean}
      * @memberof AuthResponse
@@ -44,6 +50,7 @@ export function AuthResponseFromJSONTyped(json: any, ignoreDiscriminator: boolea
     return {
         
         'accessToken': !exists(json, 'access_token') ? undefined : json['access_token'],
+        'refreshToken': !exists(json, 'refresh_token') ? undefined : json['refresh_token'],
         'registered': !exists(json, 'registered') ? undefined : json['registered'],
     };
 }
@@ -58,6 +65,7 @@ export function AuthResponseToJSON(value?: AuthResponse | null): any {
     return {
         
         'access_token': value.accessToken,
+        'refresh_token': value.refreshToken,
         'registered': value.registered,
     };
 }

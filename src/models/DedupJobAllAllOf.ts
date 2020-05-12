@@ -18,10 +18,6 @@ import {
     DedupJobAllAllOfProgressFromJSON,
     DedupJobAllAllOfProgressFromJSONTyped,
     DedupJobAllAllOfProgressToJSON,
-    DedupJobAllAllOfResults,
-    DedupJobAllAllOfResultsFromJSON,
-    DedupJobAllAllOfResultsFromJSONTyped,
-    DedupJobAllAllOfResultsToJSON,
 } from './';
 
 /**
@@ -30,6 +26,12 @@ import {
  * @interface DedupJobAllAllOf
  */
 export interface DedupJobAllAllOf {
+    /**
+     * The username of the user who created the job
+     * @type {string}
+     * @memberof DedupJobAllAllOf
+     */
+    createdBy?: string;
     /**
      * The ID of the dataset that the deduplication job is targeting.
      * @type {string}
@@ -60,12 +62,6 @@ export interface DedupJobAllAllOf {
      * @memberof DedupJobAllAllOf
      */
     progress?: DedupJobAllAllOfProgress;
-    /**
-     * 
-     * @type {DedupJobAllAllOfResults}
-     * @memberof DedupJobAllAllOf
-     */
-    results?: DedupJobAllAllOfResults;
 }
 
 export function DedupJobAllAllOfFromJSON(json: any): DedupJobAllAllOf {
@@ -78,12 +74,12 @@ export function DedupJobAllAllOfFromJSONTyped(json: any, ignoreDiscriminator: bo
     }
     return {
         
+        'createdBy': !exists(json, 'created_by') ? undefined : json['created_by'],
         'datasetId': !exists(json, 'dataset_id') ? undefined : json['dataset_id'],
         'startedAt': !exists(json, 'started_at') ? undefined : (new Date(json['started_at'])),
         'finishedAt': !exists(json, 'finished_at') ? undefined : (new Date(json['finished_at'])),
         'phase': !exists(json, 'phase') ? undefined : json['phase'],
         'progress': !exists(json, 'progress') ? undefined : DedupJobAllAllOfProgressFromJSON(json['progress']),
-        'results': !exists(json, 'results') ? undefined : DedupJobAllAllOfResultsFromJSON(json['results']),
     };
 }
 
@@ -96,12 +92,12 @@ export function DedupJobAllAllOfToJSON(value?: DedupJobAllAllOf | null): any {
     }
     return {
         
+        'created_by': value.createdBy,
         'dataset_id': value.datasetId,
         'started_at': value.startedAt === undefined ? undefined : (value.startedAt.toISOString()),
         'finished_at': value.finishedAt === undefined ? undefined : (value.finishedAt.toISOString()),
         'phase': value.phase,
         'progress': DedupJobAllAllOfProgressToJSON(value.progress),
-        'results': DedupJobAllAllOfResultsToJSON(value.results),
     };
 }
 
