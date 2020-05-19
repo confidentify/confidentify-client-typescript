@@ -33,6 +33,9 @@ import {
     DatasetRecordAll,
     DatasetRecordAllFromJSON,
     DatasetRecordAllToJSON,
+    DatasetUpdateRequest,
+    DatasetUpdateRequestFromJSON,
+    DatasetUpdateRequestToJSON,
     IngestDocumentsRequest,
     IngestDocumentsRequestFromJSON,
     IngestDocumentsRequestToJSON,
@@ -56,6 +59,11 @@ export interface DatasetByIdDeleteRequest {
 
 export interface DatasetByIdGetRequest {
     datasetId: string;
+}
+
+export interface DatasetByIdPostRequest {
+    datasetId: string;
+    datasetUpdateRequest?: DatasetUpdateRequest;
 }
 
 export interface DatasetRecordByIdDeleteRequest {
@@ -189,6 +197,56 @@ export class DatasetsApi extends runtime.BaseAPI {
      */
     async datasetByIdGet(requestParameters: DatasetByIdGetRequest): Promise<DatasetAll> {
         const response = await this.datasetByIdGetRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Update dataset
+     */
+    async datasetByIdPostRaw(requestParameters: DatasetByIdPostRequest): Promise<runtime.ApiResponse<DatasetAll>> {
+        if (requestParameters.datasetId === null || requestParameters.datasetId === undefined) {
+            throw new runtime.RequiredError('datasetId','Required parameter requestParameters.datasetId was null or undefined when calling datasetByIdPost.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            if (typeof this.configuration.accessToken === 'function') {
+                headerParameters["Authorization"] = this.configuration.accessToken("oAuth2ClientCredentials", []);
+            } else {
+                headerParameters["Authorization"] = this.configuration.accessToken;
+            }
+        }
+
+        const response = await this.request({
+            path: `/datasets/{dataset_id}`.replace(`{${"dataset_id"}}`, encodeURIComponent(String(requestParameters.datasetId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: DatasetUpdateRequestToJSON(requestParameters.datasetUpdateRequest),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => DatasetAllFromJSON(jsonValue));
+    }
+
+    /**
+     * Update dataset
+     */
+    async datasetByIdPost(requestParameters: DatasetByIdPostRequest): Promise<DatasetAll> {
+        const response = await this.datasetByIdPostRaw(requestParameters);
         return await response.value();
     }
 
