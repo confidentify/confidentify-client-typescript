@@ -12,26 +12,20 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import {
+    PersonNameDetailsRequestRecord,
+    PersonNameFullNameRequestRecord,
+    PersonNameDetailsRequestRecordFromJSONTyped,
+    PersonNameDetailsRequestRecordToJSON,
+    PersonNameFullNameRequestRecordFromJSONTyped,
+    PersonNameFullNameRequestRecordToJSON,
+} from './';
+
 /**
- * 
+ * @type PersonNameRequestRecord
  * @export
- * @interface PersonNameRequestRecord
  */
-export interface PersonNameRequestRecord {
-    /**
-     * 
-     * @type {string}
-     * @memberof PersonNameRequestRecord
-     */
-    id?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PersonNameRequestRecord
-     */
-    name?: string;
-}
+export type PersonNameRequestRecord = PersonNameDetailsRequestRecord | PersonNameFullNameRequestRecord;
 
 export function PersonNameRequestRecordFromJSON(json: any): PersonNameRequestRecord {
     return PersonNameRequestRecordFromJSONTyped(json, false);
@@ -41,11 +35,7 @@ export function PersonNameRequestRecordFromJSONTyped(json: any, ignoreDiscrimina
     if ((json === undefined) || (json === null)) {
         return json;
     }
-    return {
-        
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
-    };
+    return { ...PersonNameDetailsRequestRecordFromJSONTyped(json, true), ...PersonNameFullNameRequestRecordFromJSONTyped(json, true) };
 }
 
 export function PersonNameRequestRecordToJSON(value?: PersonNameRequestRecord | null): any {
@@ -55,11 +45,6 @@ export function PersonNameRequestRecordToJSON(value?: PersonNameRequestRecord | 
     if (value === null) {
         return null;
     }
-    return {
-        
-        'id': value.id,
-        'name': value.name,
-    };
+    return { ...PersonNameDetailsRequestRecordToJSON(value), ...PersonNameFullNameRequestRecordToJSON(value) };
 }
-
 

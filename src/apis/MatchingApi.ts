@@ -21,15 +21,24 @@ import {
     DedupJobCreateRequest,
     DedupJobCreateRequestFromJSON,
     DedupJobCreateRequestToJSON,
-    DedupJobPairsQueryResponse,
-    DedupJobPairsQueryResponseFromJSON,
-    DedupJobPairsQueryResponseToJSON,
-    DedupJobUpdateRequest,
-    DedupJobUpdateRequestFromJSON,
-    DedupJobUpdateRequestToJSON,
     DedupJobsQueryResponse,
     DedupJobsQueryResponseFromJSON,
     DedupJobsQueryResponseToJSON,
+    MatchJobAll,
+    MatchJobAllFromJSON,
+    MatchJobAllToJSON,
+    MatchJobCreateRequest,
+    MatchJobCreateRequestFromJSON,
+    MatchJobCreateRequestToJSON,
+    MatchJobPairsQueryResponse,
+    MatchJobPairsQueryResponseFromJSON,
+    MatchJobPairsQueryResponseToJSON,
+    MatchJobUpdateRequest,
+    MatchJobUpdateRequestFromJSON,
+    MatchJobUpdateRequestToJSON,
+    MatchJobsQueryResponse,
+    MatchJobsQueryResponseFromJSON,
+    MatchJobsQueryResponseToJSON,
     MatchVerdict,
     MatchVerdictFromJSON,
     MatchVerdictToJSON,
@@ -53,7 +62,7 @@ export interface DedupJobByIdPairsGetRequest {
 
 export interface DedupJobByIdPostRequest {
     jobId: string;
-    dedupJobUpdateRequest?: DedupJobUpdateRequest;
+    matchJobUpdateRequest?: MatchJobUpdateRequest;
 }
 
 export interface DedupJobsGetRequest {
@@ -64,6 +73,37 @@ export interface DedupJobsGetRequest {
 
 export interface DedupJobsPostRequest {
     dedupJobCreateRequest: DedupJobCreateRequest;
+}
+
+export interface MatchJobByIdDeleteRequest {
+    jobId: string;
+}
+
+export interface MatchJobByIdGetRequest {
+    jobId: string;
+}
+
+export interface MatchJobByIdPairsGetRequest {
+    jobId: string;
+    filterVerdict?: MatchVerdict;
+    filterRecordId?: string;
+    pageSize?: number;
+    pageAfter?: string;
+}
+
+export interface MatchJobByIdPostRequest {
+    jobId: string;
+    matchJobUpdateRequest?: MatchJobUpdateRequest;
+}
+
+export interface MatchJobsGetRequest {
+    filterDatasetId?: string;
+    pageSize?: number;
+    pageAfter?: string;
+}
+
+export interface MatchJobsPostRequest {
+    matchJobCreateRequest: MatchJobCreateRequest;
 }
 
 /**
@@ -167,7 +207,7 @@ export class MatchingApi extends runtime.BaseAPI {
     /**
      * Get record pairs found by deduplication job
      */
-    async dedupJobByIdPairsGetRaw(requestParameters: DedupJobByIdPairsGetRequest): Promise<runtime.ApiResponse<DedupJobPairsQueryResponse>> {
+    async dedupJobByIdPairsGetRaw(requestParameters: DedupJobByIdPairsGetRequest): Promise<runtime.ApiResponse<MatchJobPairsQueryResponse>> {
         if (requestParameters.jobId === null || requestParameters.jobId === undefined) {
             throw new runtime.RequiredError('jobId','Required parameter requestParameters.jobId was null or undefined when calling dedupJobByIdPairsGet.');
         }
@@ -216,13 +256,13 @@ export class MatchingApi extends runtime.BaseAPI {
             query: queryParameters,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => DedupJobPairsQueryResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => MatchJobPairsQueryResponseFromJSON(jsonValue));
     }
 
     /**
      * Get record pairs found by deduplication job
      */
-    async dedupJobByIdPairsGet(requestParameters: DedupJobByIdPairsGetRequest): Promise<DedupJobPairsQueryResponse> {
+    async dedupJobByIdPairsGet(requestParameters: DedupJobByIdPairsGetRequest): Promise<MatchJobPairsQueryResponse> {
         const response = await this.dedupJobByIdPairsGetRaw(requestParameters);
         return await response.value();
     }
@@ -263,7 +303,7 @@ export class MatchingApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: DedupJobUpdateRequestToJSON(requestParameters.dedupJobUpdateRequest),
+            body: MatchJobUpdateRequestToJSON(requestParameters.matchJobUpdateRequest),
         });
 
         return new runtime.JSONApiResponse(response, (jsonValue) => DedupJobAllFromJSON(jsonValue));
@@ -333,6 +373,7 @@ export class MatchingApi extends runtime.BaseAPI {
     }
 
     /**
+     * Creates and starts a job that will detect duplicates within a dataset, aka. \"Deduplication\". 
      * Create deduplication job
      */
     async dedupJobsPostRaw(requestParameters: DedupJobsPostRequest): Promise<runtime.ApiResponse<DedupJobAll>> {
@@ -375,10 +416,324 @@ export class MatchingApi extends runtime.BaseAPI {
     }
 
     /**
+     * Creates and starts a job that will detect duplicates within a dataset, aka. \"Deduplication\". 
      * Create deduplication job
      */
     async dedupJobsPost(requestParameters: DedupJobsPostRequest): Promise<DedupJobAll> {
         const response = await this.dedupJobsPostRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Delete match job
+     */
+    async matchJobByIdDeleteRaw(requestParameters: MatchJobByIdDeleteRequest): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.jobId === null || requestParameters.jobId === undefined) {
+            throw new runtime.RequiredError('jobId','Required parameter requestParameters.jobId was null or undefined when calling matchJobByIdDelete.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            if (typeof this.configuration.accessToken === 'function') {
+                headerParameters["Authorization"] = this.configuration.accessToken("oAuth2ClientCredentials", []);
+            } else {
+                headerParameters["Authorization"] = this.configuration.accessToken;
+            }
+        }
+
+        const response = await this.request({
+            path: `/match/jobs/{job_id}`.replace(`{${"job_id"}}`, encodeURIComponent(String(requestParameters.jobId))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Delete match job
+     */
+    async matchJobByIdDelete(requestParameters: MatchJobByIdDeleteRequest): Promise<void> {
+        await this.matchJobByIdDeleteRaw(requestParameters);
+    }
+
+    /**
+     * Get match job information
+     */
+    async matchJobByIdGetRaw(requestParameters: MatchJobByIdGetRequest): Promise<runtime.ApiResponse<MatchJobAll>> {
+        if (requestParameters.jobId === null || requestParameters.jobId === undefined) {
+            throw new runtime.RequiredError('jobId','Required parameter requestParameters.jobId was null or undefined when calling matchJobByIdGet.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            if (typeof this.configuration.accessToken === 'function') {
+                headerParameters["Authorization"] = this.configuration.accessToken("oAuth2ClientCredentials", []);
+            } else {
+                headerParameters["Authorization"] = this.configuration.accessToken;
+            }
+        }
+
+        const response = await this.request({
+            path: `/match/jobs/{job_id}`.replace(`{${"job_id"}}`, encodeURIComponent(String(requestParameters.jobId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => MatchJobAllFromJSON(jsonValue));
+    }
+
+    /**
+     * Get match job information
+     */
+    async matchJobByIdGet(requestParameters: MatchJobByIdGetRequest): Promise<MatchJobAll> {
+        const response = await this.matchJobByIdGetRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Get record pairs found by match job
+     */
+    async matchJobByIdPairsGetRaw(requestParameters: MatchJobByIdPairsGetRequest): Promise<runtime.ApiResponse<MatchJobPairsQueryResponse>> {
+        if (requestParameters.jobId === null || requestParameters.jobId === undefined) {
+            throw new runtime.RequiredError('jobId','Required parameter requestParameters.jobId was null or undefined when calling matchJobByIdPairsGet.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        if (requestParameters.filterVerdict !== undefined) {
+            queryParameters['filter_verdict'] = requestParameters.filterVerdict;
+        }
+
+        if (requestParameters.filterRecordId !== undefined) {
+            queryParameters['filter_record_id'] = requestParameters.filterRecordId;
+        }
+
+        if (requestParameters.pageSize !== undefined) {
+            queryParameters['page[size]'] = requestParameters.pageSize;
+        }
+
+        if (requestParameters.pageAfter !== undefined) {
+            queryParameters['page[after]'] = requestParameters.pageAfter;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            if (typeof this.configuration.accessToken === 'function') {
+                headerParameters["Authorization"] = this.configuration.accessToken("oAuth2ClientCredentials", []);
+            } else {
+                headerParameters["Authorization"] = this.configuration.accessToken;
+            }
+        }
+
+        const response = await this.request({
+            path: `/match/jobs/{job_id}/pairs`.replace(`{${"job_id"}}`, encodeURIComponent(String(requestParameters.jobId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => MatchJobPairsQueryResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Get record pairs found by match job
+     */
+    async matchJobByIdPairsGet(requestParameters: MatchJobByIdPairsGetRequest): Promise<MatchJobPairsQueryResponse> {
+        const response = await this.matchJobByIdPairsGetRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Update match job
+     */
+    async matchJobByIdPostRaw(requestParameters: MatchJobByIdPostRequest): Promise<runtime.ApiResponse<MatchJobAll>> {
+        if (requestParameters.jobId === null || requestParameters.jobId === undefined) {
+            throw new runtime.RequiredError('jobId','Required parameter requestParameters.jobId was null or undefined when calling matchJobByIdPost.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            if (typeof this.configuration.accessToken === 'function') {
+                headerParameters["Authorization"] = this.configuration.accessToken("oAuth2ClientCredentials", []);
+            } else {
+                headerParameters["Authorization"] = this.configuration.accessToken;
+            }
+        }
+
+        const response = await this.request({
+            path: `/match/jobs/{job_id}`.replace(`{${"job_id"}}`, encodeURIComponent(String(requestParameters.jobId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: MatchJobUpdateRequestToJSON(requestParameters.matchJobUpdateRequest),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => MatchJobAllFromJSON(jsonValue));
+    }
+
+    /**
+     * Update match job
+     */
+    async matchJobByIdPost(requestParameters: MatchJobByIdPostRequest): Promise<MatchJobAll> {
+        const response = await this.matchJobByIdPostRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Get matching jobs
+     */
+    async matchJobsGetRaw(requestParameters: MatchJobsGetRequest): Promise<runtime.ApiResponse<MatchJobsQueryResponse>> {
+        const queryParameters: runtime.HTTPQuery = {};
+
+        if (requestParameters.filterDatasetId !== undefined) {
+            queryParameters['filter_dataset_id'] = requestParameters.filterDatasetId;
+        }
+
+        if (requestParameters.pageSize !== undefined) {
+            queryParameters['page[size]'] = requestParameters.pageSize;
+        }
+
+        if (requestParameters.pageAfter !== undefined) {
+            queryParameters['page[after]'] = requestParameters.pageAfter;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            if (typeof this.configuration.accessToken === 'function') {
+                headerParameters["Authorization"] = this.configuration.accessToken("oAuth2ClientCredentials", []);
+            } else {
+                headerParameters["Authorization"] = this.configuration.accessToken;
+            }
+        }
+
+        const response = await this.request({
+            path: `/match/jobs`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => MatchJobsQueryResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Get matching jobs
+     */
+    async matchJobsGet(requestParameters: MatchJobsGetRequest): Promise<MatchJobsQueryResponse> {
+        const response = await this.matchJobsGetRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Creates and starts a job that will detect matching records between two datasets, aka. \"cross-dataset matching\". 
+     * Create match job
+     */
+    async matchJobsPostRaw(requestParameters: MatchJobsPostRequest): Promise<runtime.ApiResponse<MatchJobAll>> {
+        if (requestParameters.matchJobCreateRequest === null || requestParameters.matchJobCreateRequest === undefined) {
+            throw new runtime.RequiredError('matchJobCreateRequest','Required parameter requestParameters.matchJobCreateRequest was null or undefined when calling matchJobsPost.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            if (typeof this.configuration.accessToken === 'function') {
+                headerParameters["Authorization"] = this.configuration.accessToken("oAuth2ClientCredentials", []);
+            } else {
+                headerParameters["Authorization"] = this.configuration.accessToken;
+            }
+        }
+
+        const response = await this.request({
+            path: `/match/jobs`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: MatchJobCreateRequestToJSON(requestParameters.matchJobCreateRequest),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => MatchJobAllFromJSON(jsonValue));
+    }
+
+    /**
+     * Creates and starts a job that will detect matching records between two datasets, aka. \"cross-dataset matching\". 
+     * Create match job
+     */
+    async matchJobsPost(requestParameters: MatchJobsPostRequest): Promise<MatchJobAll> {
+        const response = await this.matchJobsPostRaw(requestParameters);
         return await response.value();
     }
 

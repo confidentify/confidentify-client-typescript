@@ -13,42 +13,53 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    MatchJobBase,
+    MatchJobBaseFromJSON,
+    MatchJobBaseFromJSONTyped,
+    MatchJobBaseToJSON,
+    NextPageInformation,
+    NextPageInformationFromJSON,
+    NextPageInformationFromJSONTyped,
+    NextPageInformationToJSON,
+} from './';
+
 /**
  * 
  * @export
- * @interface MatchedRecord
+ * @interface MatchJobsQueryResponse
  */
-export interface MatchedRecord {
+export interface MatchJobsQueryResponse {
     /**
-     * The record ID.
-     * @type {string}
-     * @memberof MatchedRecord
+     * The jobs retrieved from the query 
+     * @type {Array<MatchJobBase>}
+     * @memberof MatchJobsQueryResponse
      */
-    id?: string;
+    jobs?: Array<MatchJobBase>;
     /**
-     * The ID of the dataset that contains the record.
-     * @type {string}
-     * @memberof MatchedRecord
+     * 
+     * @type {NextPageInformation}
+     * @memberof MatchJobsQueryResponse
      */
-    datasetId?: string;
+    nextPage?: NextPageInformation;
 }
 
-export function MatchedRecordFromJSON(json: any): MatchedRecord {
-    return MatchedRecordFromJSONTyped(json, false);
+export function MatchJobsQueryResponseFromJSON(json: any): MatchJobsQueryResponse {
+    return MatchJobsQueryResponseFromJSONTyped(json, false);
 }
 
-export function MatchedRecordFromJSONTyped(json: any, ignoreDiscriminator: boolean): MatchedRecord {
+export function MatchJobsQueryResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): MatchJobsQueryResponse {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'datasetId': !exists(json, 'dataset_id') ? undefined : json['dataset_id'],
+        'jobs': !exists(json, 'jobs') ? undefined : ((json['jobs'] as Array<any>).map(MatchJobBaseFromJSON)),
+        'nextPage': !exists(json, 'next_page') ? undefined : NextPageInformationFromJSON(json['next_page']),
     };
 }
 
-export function MatchedRecordToJSON(value?: MatchedRecord | null): any {
+export function MatchJobsQueryResponseToJSON(value?: MatchJobsQueryResponse | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,8 +68,8 @@ export function MatchedRecordToJSON(value?: MatchedRecord | null): any {
     }
     return {
         
-        'id': value.id,
-        'dataset_id': value.datasetId,
+        'jobs': value.jobs === undefined ? undefined : ((value.jobs as Array<any>).map(MatchJobBaseToJSON)),
+        'next_page': NextPageInformationToJSON(value.nextPage),
     };
 }
 

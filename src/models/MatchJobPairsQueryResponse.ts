@@ -13,42 +13,53 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    MatchedPair,
+    MatchedPairFromJSON,
+    MatchedPairFromJSONTyped,
+    MatchedPairToJSON,
+    NextPageInformation,
+    NextPageInformationFromJSON,
+    NextPageInformationFromJSONTyped,
+    NextPageInformationToJSON,
+} from './';
+
 /**
  * 
  * @export
- * @interface MatchedRecord
+ * @interface MatchJobPairsQueryResponse
  */
-export interface MatchedRecord {
+export interface MatchJobPairsQueryResponse {
     /**
-     * The record ID.
-     * @type {string}
-     * @memberof MatchedRecord
+     * The record pairs retrieved from the query. 
+     * @type {Array<MatchedPair>}
+     * @memberof MatchJobPairsQueryResponse
      */
-    id?: string;
+    pairs?: Array<MatchedPair>;
     /**
-     * The ID of the dataset that contains the record.
-     * @type {string}
-     * @memberof MatchedRecord
+     * 
+     * @type {NextPageInformation}
+     * @memberof MatchJobPairsQueryResponse
      */
-    datasetId?: string;
+    nextPage?: NextPageInformation;
 }
 
-export function MatchedRecordFromJSON(json: any): MatchedRecord {
-    return MatchedRecordFromJSONTyped(json, false);
+export function MatchJobPairsQueryResponseFromJSON(json: any): MatchJobPairsQueryResponse {
+    return MatchJobPairsQueryResponseFromJSONTyped(json, false);
 }
 
-export function MatchedRecordFromJSONTyped(json: any, ignoreDiscriminator: boolean): MatchedRecord {
+export function MatchJobPairsQueryResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): MatchJobPairsQueryResponse {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'datasetId': !exists(json, 'dataset_id') ? undefined : json['dataset_id'],
+        'pairs': !exists(json, 'pairs') ? undefined : ((json['pairs'] as Array<any>).map(MatchedPairFromJSON)),
+        'nextPage': !exists(json, 'next_page') ? undefined : NextPageInformationFromJSON(json['next_page']),
     };
 }
 
-export function MatchedRecordToJSON(value?: MatchedRecord | null): any {
+export function MatchJobPairsQueryResponseToJSON(value?: MatchJobPairsQueryResponse | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,8 +68,8 @@ export function MatchedRecordToJSON(value?: MatchedRecord | null): any {
     }
     return {
         
-        'id': value.id,
-        'dataset_id': value.datasetId,
+        'pairs': value.pairs === undefined ? undefined : ((value.pairs as Array<any>).map(MatchedPairToJSON)),
+        'next_page': NextPageInformationToJSON(value.nextPage),
     };
 }
 

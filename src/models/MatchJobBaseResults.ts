@@ -14,41 +14,41 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * 
+ * Provides the results of the job. If the job is still running, there may still be preliminary results available.
  * @export
- * @interface MatchedRecord
+ * @interface MatchJobBaseResults
  */
-export interface MatchedRecord {
+export interface MatchJobBaseResults {
     /**
-     * The record ID.
-     * @type {string}
-     * @memberof MatchedRecord
+     * Number of record pairs matched with a \'matched\' verdict.
+     * @type {number}
+     * @memberof MatchJobBaseResults
      */
-    id?: string;
+    pairsMatched?: number;
     /**
-     * The ID of the dataset that contains the record.
-     * @type {string}
-     * @memberof MatchedRecord
+     * Number of record pairs matched with a \'questionable\' verdict.
+     * @type {number}
+     * @memberof MatchJobBaseResults
      */
-    datasetId?: string;
+    pairsQuestionable?: number;
 }
 
-export function MatchedRecordFromJSON(json: any): MatchedRecord {
-    return MatchedRecordFromJSONTyped(json, false);
+export function MatchJobBaseResultsFromJSON(json: any): MatchJobBaseResults {
+    return MatchJobBaseResultsFromJSONTyped(json, false);
 }
 
-export function MatchedRecordFromJSONTyped(json: any, ignoreDiscriminator: boolean): MatchedRecord {
+export function MatchJobBaseResultsFromJSONTyped(json: any, ignoreDiscriminator: boolean): MatchJobBaseResults {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'datasetId': !exists(json, 'dataset_id') ? undefined : json['dataset_id'],
+        'pairsMatched': !exists(json, 'pairs_matched') ? undefined : json['pairs_matched'],
+        'pairsQuestionable': !exists(json, 'pairs_questionable') ? undefined : json['pairs_questionable'],
     };
 }
 
-export function MatchedRecordToJSON(value?: MatchedRecord | null): any {
+export function MatchJobBaseResultsToJSON(value?: MatchJobBaseResults | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,8 +57,8 @@ export function MatchedRecordToJSON(value?: MatchedRecord | null): any {
     }
     return {
         
-        'id': value.id,
-        'dataset_id': value.datasetId,
+        'pairs_matched': value.pairsMatched,
+        'pairs_questionable': value.pairsQuestionable,
     };
 }
 

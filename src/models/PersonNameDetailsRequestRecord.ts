@@ -14,41 +14,62 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * 
+ * Request format used to process a name in parts
  * @export
- * @interface MatchedRecord
+ * @interface PersonNameDetailsRequestRecord
  */
-export interface MatchedRecord {
+export interface PersonNameDetailsRequestRecord {
     /**
-     * The record ID.
+     * 
      * @type {string}
-     * @memberof MatchedRecord
+     * @memberof PersonNameDetailsRequestRecord
      */
     id?: string;
     /**
-     * The ID of the dataset that contains the record.
+     * The given name (aka. first name in western naming culture)
      * @type {string}
-     * @memberof MatchedRecord
+     * @memberof PersonNameDetailsRequestRecord
      */
-    datasetId?: string;
+    given?: string;
+    /**
+     * The middle name, if available
+     * @type {string}
+     * @memberof PersonNameDetailsRequestRecord
+     */
+    middle?: string;
+    /**
+     * The family name (aka. last name of surname in western naming culture)
+     * @type {string}
+     * @memberof PersonNameDetailsRequestRecord
+     */
+    family?: string;
+    /**
+     * The name suffix, if available
+     * @type {string}
+     * @memberof PersonNameDetailsRequestRecord
+     */
+    suffix?: string;
 }
 
-export function MatchedRecordFromJSON(json: any): MatchedRecord {
-    return MatchedRecordFromJSONTyped(json, false);
+export function PersonNameDetailsRequestRecordFromJSON(json: any): PersonNameDetailsRequestRecord {
+    return PersonNameDetailsRequestRecordFromJSONTyped(json, false);
 }
 
-export function MatchedRecordFromJSONTyped(json: any, ignoreDiscriminator: boolean): MatchedRecord {
+export function PersonNameDetailsRequestRecordFromJSONTyped(json: any, ignoreDiscriminator: boolean): PersonNameDetailsRequestRecord {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'id': !exists(json, 'id') ? undefined : json['id'],
-        'datasetId': !exists(json, 'dataset_id') ? undefined : json['dataset_id'],
+        'given': !exists(json, 'given') ? undefined : json['given'],
+        'middle': !exists(json, 'middle') ? undefined : json['middle'],
+        'family': !exists(json, 'family') ? undefined : json['family'],
+        'suffix': !exists(json, 'suffix') ? undefined : json['suffix'],
     };
 }
 
-export function MatchedRecordToJSON(value?: MatchedRecord | null): any {
+export function PersonNameDetailsRequestRecordToJSON(value?: PersonNameDetailsRequestRecord | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -58,7 +79,10 @@ export function MatchedRecordToJSON(value?: MatchedRecord | null): any {
     return {
         
         'id': value.id,
-        'dataset_id': value.datasetId,
+        'given': value.given,
+        'middle': value.middle,
+        'family': value.family,
+        'suffix': value.suffix,
     };
 }
 

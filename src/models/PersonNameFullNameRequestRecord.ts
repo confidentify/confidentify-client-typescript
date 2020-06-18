@@ -14,41 +14,41 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * 
+ * Request format used to process a full name
  * @export
- * @interface MatchedRecord
+ * @interface PersonNameFullNameRequestRecord
  */
-export interface MatchedRecord {
+export interface PersonNameFullNameRequestRecord {
     /**
-     * The record ID.
+     * 
      * @type {string}
-     * @memberof MatchedRecord
+     * @memberof PersonNameFullNameRequestRecord
      */
     id?: string;
     /**
-     * The ID of the dataset that contains the record.
+     * 
      * @type {string}
-     * @memberof MatchedRecord
+     * @memberof PersonNameFullNameRequestRecord
      */
-    datasetId?: string;
+    name?: string;
 }
 
-export function MatchedRecordFromJSON(json: any): MatchedRecord {
-    return MatchedRecordFromJSONTyped(json, false);
+export function PersonNameFullNameRequestRecordFromJSON(json: any): PersonNameFullNameRequestRecord {
+    return PersonNameFullNameRequestRecordFromJSONTyped(json, false);
 }
 
-export function MatchedRecordFromJSONTyped(json: any, ignoreDiscriminator: boolean): MatchedRecord {
+export function PersonNameFullNameRequestRecordFromJSONTyped(json: any, ignoreDiscriminator: boolean): PersonNameFullNameRequestRecord {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'id': !exists(json, 'id') ? undefined : json['id'],
-        'datasetId': !exists(json, 'dataset_id') ? undefined : json['dataset_id'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
     };
 }
 
-export function MatchedRecordToJSON(value?: MatchedRecord | null): any {
+export function PersonNameFullNameRequestRecordToJSON(value?: PersonNameFullNameRequestRecord | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -58,7 +58,7 @@ export function MatchedRecordToJSON(value?: MatchedRecord | null): any {
     return {
         
         'id': value.id,
-        'dataset_id': value.datasetId,
+        'name': value.name,
     };
 }
 

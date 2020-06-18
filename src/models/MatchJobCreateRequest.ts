@@ -16,39 +16,39 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface MatchedRecord
+ * @interface MatchJobCreateRequest
  */
-export interface MatchedRecord {
+export interface MatchJobCreateRequest {
     /**
-     * The record ID.
-     * @type {string}
-     * @memberof MatchedRecord
+     * The IDs of the datasets to match
+     * @type {Array<string>}
+     * @memberof MatchJobCreateRequest
      */
-    id?: string;
+    datasets?: Array<string>;
     /**
-     * The ID of the dataset that contains the record.
+     * An optional name for the job 
      * @type {string}
-     * @memberof MatchedRecord
+     * @memberof MatchJobCreateRequest
      */
-    datasetId?: string;
+    name?: string;
 }
 
-export function MatchedRecordFromJSON(json: any): MatchedRecord {
-    return MatchedRecordFromJSONTyped(json, false);
+export function MatchJobCreateRequestFromJSON(json: any): MatchJobCreateRequest {
+    return MatchJobCreateRequestFromJSONTyped(json, false);
 }
 
-export function MatchedRecordFromJSONTyped(json: any, ignoreDiscriminator: boolean): MatchedRecord {
+export function MatchJobCreateRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): MatchJobCreateRequest {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'datasetId': !exists(json, 'dataset_id') ? undefined : json['dataset_id'],
+        'datasets': !exists(json, 'datasets') ? undefined : json['datasets'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
     };
 }
 
-export function MatchedRecordToJSON(value?: MatchedRecord | null): any {
+export function MatchJobCreateRequestToJSON(value?: MatchJobCreateRequest | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,8 +57,8 @@ export function MatchedRecordToJSON(value?: MatchedRecord | null): any {
     }
     return {
         
-        'id': value.id,
-        'dataset_id': value.datasetId,
+        'datasets': value.datasets,
+        'name': value.name,
     };
 }
 

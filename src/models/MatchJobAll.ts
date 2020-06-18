@@ -14,6 +14,18 @@
 
 import { exists, mapValues } from '../runtime';
 import {
+    MatchJobAllAllOf,
+    MatchJobAllAllOfFromJSON,
+    MatchJobAllAllOfFromJSONTyped,
+    MatchJobAllAllOfToJSON,
+    MatchJobBase,
+    MatchJobBaseFromJSON,
+    MatchJobBaseFromJSONTyped,
+    MatchJobBaseToJSON,
+    MatchJobBaseResults,
+    MatchJobBaseResultsFromJSON,
+    MatchJobBaseResultsFromJSONTyped,
+    MatchJobBaseResultsToJSON,
     MatchJobProgress,
     MatchJobProgressFromJSON,
     MatchJobProgressFromJSONTyped,
@@ -23,59 +35,94 @@ import {
 /**
  * 
  * @export
- * @interface DedupJobAllAllOf
+ * @interface MatchJobAll
  */
-export interface DedupJobAllAllOf {
+export interface MatchJobAll {
+    /**
+     * A unique ID for the match job 
+     * @type {string}
+     * @memberof MatchJobAll
+     */
+    id?: string;
+    /**
+     * An optional name for the job 
+     * @type {string}
+     * @memberof MatchJobAll
+     */
+    name?: string;
+    /**
+     * Determines if the job is currently running.
+     * @type {boolean}
+     * @memberof MatchJobAll
+     */
+    running?: boolean;
+    /**
+     * The date and time of job creation.
+     * @type {Date}
+     * @memberof MatchJobAll
+     */
+    createdAt?: Date;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof MatchJobAll
+     */
+    datasets?: Array<string>;
+    /**
+     * 
+     * @type {MatchJobBaseResults}
+     * @memberof MatchJobAll
+     */
+    results?: MatchJobBaseResults;
     /**
      * The username of the user who created the job
      * @type {string}
-     * @memberof DedupJobAllAllOf
+     * @memberof MatchJobAll
      */
     createdBy?: string;
     /**
-     * The ID of the dataset that the deduplication job is targeting.
-     * @type {string}
-     * @memberof DedupJobAllAllOf
-     */
-    datasetId?: string;
-    /**
      * The date and time of job starting.
      * @type {Date}
-     * @memberof DedupJobAllAllOf
+     * @memberof MatchJobAll
      */
     startedAt?: Date;
     /**
      * The date and time of job finishing.
      * @type {Date}
-     * @memberof DedupJobAllAllOf
+     * @memberof MatchJobAll
      */
     finishedAt?: Date;
     /**
      * A description of the latest known job state.
      * @type {string}
-     * @memberof DedupJobAllAllOf
+     * @memberof MatchJobAll
      */
     phase?: string;
     /**
      * 
      * @type {MatchJobProgress}
-     * @memberof DedupJobAllAllOf
+     * @memberof MatchJobAll
      */
     progress?: MatchJobProgress;
 }
 
-export function DedupJobAllAllOfFromJSON(json: any): DedupJobAllAllOf {
-    return DedupJobAllAllOfFromJSONTyped(json, false);
+export function MatchJobAllFromJSON(json: any): MatchJobAll {
+    return MatchJobAllFromJSONTyped(json, false);
 }
 
-export function DedupJobAllAllOfFromJSONTyped(json: any, ignoreDiscriminator: boolean): DedupJobAllAllOf {
+export function MatchJobAllFromJSONTyped(json: any, ignoreDiscriminator: boolean): MatchJobAll {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
+        'running': !exists(json, 'running') ? undefined : json['running'],
+        'createdAt': !exists(json, 'created_at') ? undefined : (new Date(json['created_at'])),
+        'datasets': !exists(json, 'datasets') ? undefined : json['datasets'],
+        'results': !exists(json, 'results') ? undefined : MatchJobBaseResultsFromJSON(json['results']),
         'createdBy': !exists(json, 'created_by') ? undefined : json['created_by'],
-        'datasetId': !exists(json, 'dataset_id') ? undefined : json['dataset_id'],
         'startedAt': !exists(json, 'started_at') ? undefined : (new Date(json['started_at'])),
         'finishedAt': !exists(json, 'finished_at') ? undefined : (new Date(json['finished_at'])),
         'phase': !exists(json, 'phase') ? undefined : json['phase'],
@@ -83,7 +130,7 @@ export function DedupJobAllAllOfFromJSONTyped(json: any, ignoreDiscriminator: bo
     };
 }
 
-export function DedupJobAllAllOfToJSON(value?: DedupJobAllAllOf | null): any {
+export function MatchJobAllToJSON(value?: MatchJobAll | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -92,8 +139,13 @@ export function DedupJobAllAllOfToJSON(value?: DedupJobAllAllOf | null): any {
     }
     return {
         
+        'id': value.id,
+        'name': value.name,
+        'running': value.running,
+        'created_at': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
+        'datasets': value.datasets,
+        'results': MatchJobBaseResultsToJSON(value.results),
         'created_by': value.createdBy,
-        'dataset_id': value.datasetId,
         'started_at': value.startedAt === undefined ? undefined : (value.startedAt.toISOString()),
         'finished_at': value.finishedAt === undefined ? undefined : (value.finishedAt.toISOString()),
         'phase': value.phase,

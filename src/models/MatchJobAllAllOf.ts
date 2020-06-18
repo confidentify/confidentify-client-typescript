@@ -23,59 +23,52 @@ import {
 /**
  * 
  * @export
- * @interface DedupJobAllAllOf
+ * @interface MatchJobAllAllOf
  */
-export interface DedupJobAllAllOf {
+export interface MatchJobAllAllOf {
     /**
      * The username of the user who created the job
      * @type {string}
-     * @memberof DedupJobAllAllOf
+     * @memberof MatchJobAllAllOf
      */
     createdBy?: string;
     /**
-     * The ID of the dataset that the deduplication job is targeting.
-     * @type {string}
-     * @memberof DedupJobAllAllOf
-     */
-    datasetId?: string;
-    /**
      * The date and time of job starting.
      * @type {Date}
-     * @memberof DedupJobAllAllOf
+     * @memberof MatchJobAllAllOf
      */
     startedAt?: Date;
     /**
      * The date and time of job finishing.
      * @type {Date}
-     * @memberof DedupJobAllAllOf
+     * @memberof MatchJobAllAllOf
      */
     finishedAt?: Date;
     /**
      * A description of the latest known job state.
      * @type {string}
-     * @memberof DedupJobAllAllOf
+     * @memberof MatchJobAllAllOf
      */
     phase?: string;
     /**
      * 
      * @type {MatchJobProgress}
-     * @memberof DedupJobAllAllOf
+     * @memberof MatchJobAllAllOf
      */
     progress?: MatchJobProgress;
 }
 
-export function DedupJobAllAllOfFromJSON(json: any): DedupJobAllAllOf {
-    return DedupJobAllAllOfFromJSONTyped(json, false);
+export function MatchJobAllAllOfFromJSON(json: any): MatchJobAllAllOf {
+    return MatchJobAllAllOfFromJSONTyped(json, false);
 }
 
-export function DedupJobAllAllOfFromJSONTyped(json: any, ignoreDiscriminator: boolean): DedupJobAllAllOf {
+export function MatchJobAllAllOfFromJSONTyped(json: any, ignoreDiscriminator: boolean): MatchJobAllAllOf {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'createdBy': !exists(json, 'created_by') ? undefined : json['created_by'],
-        'datasetId': !exists(json, 'dataset_id') ? undefined : json['dataset_id'],
         'startedAt': !exists(json, 'started_at') ? undefined : (new Date(json['started_at'])),
         'finishedAt': !exists(json, 'finished_at') ? undefined : (new Date(json['finished_at'])),
         'phase': !exists(json, 'phase') ? undefined : json['phase'],
@@ -83,7 +76,7 @@ export function DedupJobAllAllOfFromJSONTyped(json: any, ignoreDiscriminator: bo
     };
 }
 
-export function DedupJobAllAllOfToJSON(value?: DedupJobAllAllOf | null): any {
+export function MatchJobAllAllOfToJSON(value?: MatchJobAllAllOf | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -93,7 +86,6 @@ export function DedupJobAllAllOfToJSON(value?: DedupJobAllAllOf | null): any {
     return {
         
         'created_by': value.createdBy,
-        'dataset_id': value.datasetId,
         'started_at': value.startedAt === undefined ? undefined : (value.startedAt.toISOString()),
         'finished_at': value.finishedAt === undefined ? undefined : (value.finishedAt.toISOString()),
         'phase': value.phase,

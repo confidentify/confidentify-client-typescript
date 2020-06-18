@@ -16,39 +16,32 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface MatchedRecord
+ * @interface MatchJobUpdateRequest
  */
-export interface MatchedRecord {
+export interface MatchJobUpdateRequest {
     /**
-     * The record ID.
+     * New name for the job 
      * @type {string}
-     * @memberof MatchedRecord
+     * @memberof MatchJobUpdateRequest
      */
-    id?: string;
-    /**
-     * The ID of the dataset that contains the record.
-     * @type {string}
-     * @memberof MatchedRecord
-     */
-    datasetId?: string;
+    name?: string;
 }
 
-export function MatchedRecordFromJSON(json: any): MatchedRecord {
-    return MatchedRecordFromJSONTyped(json, false);
+export function MatchJobUpdateRequestFromJSON(json: any): MatchJobUpdateRequest {
+    return MatchJobUpdateRequestFromJSONTyped(json, false);
 }
 
-export function MatchedRecordFromJSONTyped(json: any, ignoreDiscriminator: boolean): MatchedRecord {
+export function MatchJobUpdateRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): MatchJobUpdateRequest {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'datasetId': !exists(json, 'dataset_id') ? undefined : json['dataset_id'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
     };
 }
 
-export function MatchedRecordToJSON(value?: MatchedRecord | null): any {
+export function MatchJobUpdateRequestToJSON(value?: MatchJobUpdateRequest | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,8 +50,7 @@ export function MatchedRecordToJSON(value?: MatchedRecord | null): any {
     }
     return {
         
-        'id': value.id,
-        'dataset_id': value.datasetId,
+        'name': value.name,
     };
 }
 
