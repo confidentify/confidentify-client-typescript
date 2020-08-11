@@ -39,6 +39,12 @@ export interface DedupJobBase {
      */
     name?: string;
     /**
+     * The ID of the dataset that the deduplication job is targeting.
+     * @type {string}
+     * @memberof DedupJobBase
+     */
+    datasetId?: string;
+    /**
      * Determines if the job is currently running.
      * @type {boolean}
      * @memberof DedupJobBase
@@ -70,6 +76,7 @@ export function DedupJobBaseFromJSONTyped(json: any, ignoreDiscriminator: boolea
         
         'id': !exists(json, 'id') ? undefined : json['id'],
         'name': !exists(json, 'name') ? undefined : json['name'],
+        'datasetId': !exists(json, 'dataset_id') ? undefined : json['dataset_id'],
         'running': !exists(json, 'running') ? undefined : json['running'],
         'createdAt': !exists(json, 'created_at') ? undefined : (new Date(json['created_at'])),
         'results': !exists(json, 'results') ? undefined : MatchJobBaseResultsFromJSON(json['results']),
@@ -87,6 +94,7 @@ export function DedupJobBaseToJSON(value?: DedupJobBase | null): any {
         
         'id': value.id,
         'name': value.name,
+        'dataset_id': value.datasetId,
         'running': value.running,
         'created_at': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'results': MatchJobBaseResultsToJSON(value.results),
