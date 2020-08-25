@@ -1,5 +1,7 @@
 export * from './AuthRequest';
 export * from './AuthResponse';
+export * from './AuthorizationCodeRequest';
+export * from './AuthorizationCodeResponse';
 export * from './ConfidentifyAccountCreateRequest';
 export * from './ConfidentifyAccountResponse';
 export * from './ConfidentifyAccountUpdateRequest';

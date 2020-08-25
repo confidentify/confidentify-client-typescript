@@ -21,10 +21,20 @@ import {
     AuthResponse,
     AuthResponseFromJSON,
     AuthResponseToJSON,
+    AuthorizationCodeRequest,
+    AuthorizationCodeRequestFromJSON,
+    AuthorizationCodeRequestToJSON,
+    AuthorizationCodeResponse,
+    AuthorizationCodeResponseFromJSON,
+    AuthorizationCodeResponseToJSON,
 } from '../models';
 
 export interface AuthPostRequest {
     authRequest: AuthRequest;
+}
+
+export interface AuthorizationCodePostRequest {
+    authorizationCodeRequest: AuthorizationCodeRequest;
 }
 
 /**
@@ -81,6 +91,58 @@ export class AuthApi extends runtime.BaseAPI {
      */
     async authPost(requestParameters: AuthPostRequest): Promise<AuthResponse> {
         const response = await this.authPostRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Given an authenticated user and OAuth2 `client_id`, `redirect_url` and `state`, this endpoint generates a authorization code that can be sent to the OAuth counterpart and be validated as it is returned in subsequent oauth token requests. 
+     * Retrieve authorization code to use as part of OAuth2 flow
+     */
+    async authorizationCodePostRaw(requestParameters: AuthorizationCodePostRequest): Promise<runtime.ApiResponse<AuthorizationCodeResponse>> {
+        if (requestParameters.authorizationCodeRequest === null || requestParameters.authorizationCodeRequest === undefined) {
+            throw new runtime.RequiredError('authorizationCodeRequest','Required parameter requestParameters.authorizationCodeRequest was null or undefined when calling authorizationCodePost.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearerAuth", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            if (typeof this.configuration.accessToken === 'function') {
+                headerParameters["Authorization"] = this.configuration.accessToken("oAuth2ClientCredentials", []);
+            } else {
+                headerParameters["Authorization"] = this.configuration.accessToken;
+            }
+        }
+
+        const response = await this.request({
+            path: `/auth/authorization_code`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: AuthorizationCodeRequestToJSON(requestParameters.authorizationCodeRequest),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AuthorizationCodeResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Given an authenticated user and OAuth2 `client_id`, `redirect_url` and `state`, this endpoint generates a authorization code that can be sent to the OAuth counterpart and be validated as it is returned in subsequent oauth token requests. 
+     * Retrieve authorization code to use as part of OAuth2 flow
+     */
+    async authorizationCodePost(requestParameters: AuthorizationCodePostRequest): Promise<AuthorizationCodeResponse> {
+        const response = await this.authorizationCodePostRaw(requestParameters);
         return await response.value();
     }
 
