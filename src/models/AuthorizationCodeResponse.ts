@@ -30,7 +30,7 @@ export interface AuthorizationCodeResponse {
      * @type {string}
      * @memberof AuthorizationCodeResponse
      */
-    redirectUrl?: string;
+    redirectUri?: string;
 }
 
 export function AuthorizationCodeResponseFromJSON(json: any): AuthorizationCodeResponse {
@@ -44,7 +44,7 @@ export function AuthorizationCodeResponseFromJSONTyped(json: any, ignoreDiscrimi
     return {
         
         'authorizationCode': !exists(json, 'authorization_code') ? undefined : json['authorization_code'],
-        'redirectUrl': !exists(json, 'redirect_url') ? undefined : json['redirect_url'],
+        'redirectUri': !exists(json, 'redirect_uri') ? undefined : json['redirect_uri'],
     };
 }
 
@@ -58,7 +58,7 @@ export function AuthorizationCodeResponseToJSON(value?: AuthorizationCodeRespons
     return {
         
         'authorization_code': value.authorizationCode,
-        'redirect_url': value.redirectUrl,
+        'redirect_uri': value.redirectUri,
     };
 }
 

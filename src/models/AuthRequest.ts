@@ -62,11 +62,11 @@ export interface AuthRequest {
      */
     clientSecret?: string;
     /**
-     * Client redirect_url as per the OAuth2 protocol.
+     * Client redirect_uri as per the OAuth2 protocol.
      * @type {string}
      * @memberof AuthRequest
      */
-    redirectUrl?: string;
+    redirectUri?: string;
     /**
      * The authorization code, if `grant_type` is `authorization_code`. Use the `/auth/authorization_code` endpoint to generate this code and the URL which acts as a OAuth2 handshake for it. 
      * @type {string}
@@ -104,7 +104,7 @@ export function AuthRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'googleAccessToken': !exists(json, 'google_access_token') ? undefined : json['google_access_token'],
         'clientId': !exists(json, 'client_id') ? undefined : json['client_id'],
         'clientSecret': !exists(json, 'client_secret') ? undefined : json['client_secret'],
-        'redirectUrl': !exists(json, 'redirect_url') ? undefined : json['redirect_url'],
+        'redirectUri': !exists(json, 'redirect_uri') ? undefined : json['redirect_uri'],
         'code': !exists(json, 'code') ? undefined : json['code'],
         'expireAfterSeconds': !exists(json, 'expire_after_seconds') ? undefined : json['expire_after_seconds'],
         'serviceGrants': !exists(json, 'service_grants') ? undefined : json['service_grants'],
@@ -127,7 +127,7 @@ export function AuthRequestToJSON(value?: AuthRequest | null): any {
         'google_access_token': value.googleAccessToken,
         'client_id': value.clientId,
         'client_secret': value.clientSecret,
-        'redirect_url': value.redirectUrl,
+        'redirect_uri': value.redirectUri,
         'code': value.code,
         'expire_after_seconds': value.expireAfterSeconds,
         'service_grants': value.serviceGrants,

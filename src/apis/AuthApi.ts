@@ -95,7 +95,7 @@ export class AuthApi extends runtime.BaseAPI {
     }
 
     /**
-     * Given an authenticated user and OAuth2 `client_id`, `redirect_url` and `state`, this endpoint generates a authorization code that can be sent to the OAuth counterpart and be validated as it is returned in subsequent oauth token requests. 
+     * Given an authenticated user and OAuth2 `client_id`, `redirect_uri` and `state`, this endpoint generates a authorization code that can be sent to the OAuth counterpart and be validated as it is returned in subsequent oauth token requests. 
      * Retrieve authorization code to use as part of OAuth2 flow
      */
     async authorizationCodePostRaw(requestParameters: AuthorizationCodePostRequest): Promise<runtime.ApiResponse<AuthorizationCodeResponse>> {
@@ -138,7 +138,7 @@ export class AuthApi extends runtime.BaseAPI {
     }
 
     /**
-     * Given an authenticated user and OAuth2 `client_id`, `redirect_url` and `state`, this endpoint generates a authorization code that can be sent to the OAuth counterpart and be validated as it is returned in subsequent oauth token requests. 
+     * Given an authenticated user and OAuth2 `client_id`, `redirect_uri` and `state`, this endpoint generates a authorization code that can be sent to the OAuth counterpart and be validated as it is returned in subsequent oauth token requests. 
      * Retrieve authorization code to use as part of OAuth2 flow
      */
     async authorizationCodePost(requestParameters: AuthorizationCodePostRequest): Promise<AuthorizationCodeResponse> {
